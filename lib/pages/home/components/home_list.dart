@@ -41,7 +41,8 @@ class HomeList extends StatelessWidget {
                   style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
-                      color: Colors.orange)),
+                      color: Colors.orange)
+              ),
             ],
           ),
           ListView(
