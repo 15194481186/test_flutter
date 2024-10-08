@@ -6,7 +6,7 @@ void main() {
      MaterialApp(
       routes: {
        '/': (context)=> const TabBarPage()
-      }
+      },
      ),
   );
 }
