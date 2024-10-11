@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:enjoy_plus_hm/utils/http.dart';
 import 'package:enjoy_plus_hm/utils/toast.dart';
 import 'package:flutter/material.dart';
 
@@ -41,7 +42,7 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _codeController = TextEditingController();
 
   // 3. 获取短信验证码
-  void _getCode() {
+  void _getCode() async {
     // 3.1 获取输入框中的值
     String mobile = _phoneController.text;
 
@@ -55,11 +56,19 @@ class _LoginPageState extends State<LoginPage> {
       return ToastUtil.showError('请输入合法的手机号');
     }
 
-    // 3.3 调用获取验证码接口
+    // 3.3 开始倒计时
+    _startCountdown();
 
-    // 3.4 开始倒计时
+    // 3.4 调用获取验证码接口
+    var res = await http.get('/code', params: {'mobile': mobile});
+    if (res['code'] != 10000) return ToastUtil.showError('获取验证码失败');
 
     // 3.5 把验证码回显到验证码输入框中
+    Future.delayed(const Duration(seconds: 2), (){
+      setState(() {
+        _codeController.text = res['data']['code'];
+      });
+    });
   }
 
   @override
