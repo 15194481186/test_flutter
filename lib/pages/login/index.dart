@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:enjoy_plus_hm/utils/http.dart';
 import 'package:enjoy_plus_hm/utils/toast.dart';
+import 'package:enjoy_plus_hm/utils/token.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
@@ -64,18 +65,49 @@ class _LoginPageState extends State<LoginPage> {
     if (res['code'] != 10000) return ToastUtil.showError('获取验证码失败');
 
     // 3.5 把验证码回显到验证码输入框中
-    Future.delayed(const Duration(seconds: 2), (){
+    Future.delayed(const Duration(seconds: 2), () {
       setState(() {
         _codeController.text = res['data']['code'];
       });
     });
   }
 
-  @override
-  void dispose() {
-    _phoneController.dispose();
-    _codeController.dispose();
-    super.dispose();
+  // 4. 登录
+  void _login() async {
+    // 4.1 获取输入框中的值
+    String mobile = _phoneController.text;
+    String code = _codeController.text;
+    // 4.2 对手机号进行校验(非空, 正则)
+    if (mobile.isEmpty) {
+      return ToastUtil.showError('请输入手机号');
+    }
+    RegExp reg = RegExp(r'^1[3-9]\d{9}$');
+    if (!reg.hasMatch(mobile)) {
+      return ToastUtil.showError('请输入合法的手机号');
+    }
+    // 4.3 对验证码进行校验(非空, 正则)
+    if (code.isEmpty) {
+      return ToastUtil.showError('请输入验证码');
+    }
+    RegExp reg1 = RegExp(r'^\d{6}$');
+    if (!reg1.hasMatch(code)) {
+      return ToastUtil.showError('请输入6位数字验证码');
+    }
+    // 4.4 调用登录接口
+    var res = await http.post('/login', data: {
+      'mobile': mobile,
+      'code': code,
+    });
+    if (res['code'] != 10000) return ToastUtil.showError('登录失败');
+    print(res);
+    // 4.5 存储token
+    TokenManager tokenManager =  TokenManager();
+    await tokenManager.saveToken(res['data']['token']);
+    // 4.5 清除定时器
+    _timer?.cancel();
+    // 4.6 返回上一页
+    // ignore: use_build_context_synchronously
+    Navigator.pop(context);
   }
 
   @override
@@ -161,7 +193,9 @@ class _LoginPageState extends State<LoginPage> {
                     backgroundColor: const Color.fromARGB(255, 85, 145, 175),
                     minimumSize: const Size(100, 50),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    _login();
+                  },
                   child: const Text('登录',
                       style: TextStyle(color: Colors.white, fontSize: 20)),
                 ))
