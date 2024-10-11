@@ -28,7 +28,7 @@ class _HomePageState extends State<HomePage> {
             // 中间广告图
             ClipRRect(
               borderRadius: BorderRadius.circular(10.0),
-              child: Image.asset('images/banner@2x.jpg'),
+              child: Image.asset('assets/images/banner@2x.jpg'),
             ),
             // 社区公告
             HomeList()

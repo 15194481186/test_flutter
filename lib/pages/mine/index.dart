@@ -12,15 +12,15 @@ class _MinePageState extends State<MinePage> {
   final List menuList = [
     {
       "title": "我的房屋",
-      "icon": "images/house_profile_icon@2x.png",
+      "icon": "assets/images/house_profile_icon@2x.png",
     },
     {
       "title": "我的报修",
-      "icon": "images/repair_profile_icon@2x.png",
+      "icon": "assets/images/repair_profile_icon@2x.png",
     },
     {
       "title": "访客记录",
-      "icon": "images/visitor_profile_icon@2x.png",
+      "icon": "assets/images/visitor_profile_icon@2x.png",
     }
   ];
 
@@ -46,7 +46,7 @@ class _MinePageState extends State<MinePage> {
                     Row(children: [
                       ClipRRect(
                           borderRadius: BorderRadius.circular(50.0),
-                          child: Image.asset('images/avatar_1.jpg',
+                          child: Image.asset('assets/images/avatar_1.jpg',
                               width: 50, height: 50)),
                       const SizedBox(width: 10),
                       const Text('用户名',

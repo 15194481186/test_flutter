@@ -88,5 +88,21 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
-assets:
-  - assets/
+  assets:
+    - assets/tabs/home_active.png
+    - assets/tabs/home_default.png
+    - assets/tabs/my_default.png
+    - assets/tabs/my_active.png
+    - assets/images/avatar_1.jpg
+    - assets/images/avatar_2.jpg
+    - assets/images/banner@2x.jpg
+    - assets/images/blank@2x.png
+    - assets/images/house_nav_icon@2x.png
+    - assets/images/house_profile_icon@2x.png
+    - assets/images/marker.png
+    - assets/images/notice@2x.png
+    - assets/images/repair_nav_icon@2x.png
+    - assets/images/repair_profile_icon@2x.png
+    - assets/images/share_poster.png
+    - assets/images/visitor_nav_icon@2x.png
+    - assets/images/visitor_profile_icon@2x.png

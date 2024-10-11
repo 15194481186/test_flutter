@@ -7,15 +7,15 @@ class HomeNav extends StatelessWidget {
   List navList = [
     {
       'title': '我的房屋',
-      'icon': 'images/house_nav_icon@2x.png',
+      'icon': 'assets/images/house_nav_icon@2x.png',
     },
     {
       'title': '我的报修',
-      'icon': 'images/repair_nav_icon@2x.png',
+      'icon': 'assets/images/repair_nav_icon@2x.png',
     },
     {
       'title': '访客登记',
-      'icon': 'images/visitor_nav_icon@2x.png',
+      'icon': 'assets/images/visitor_nav_icon@2x.png',
     }
   ];
 

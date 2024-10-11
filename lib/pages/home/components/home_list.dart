@@ -30,7 +30,7 @@ class HomeList extends StatelessWidget {
           Row(
             children: [
               Image.asset(
-                'images/notice@2x.png',
+                'assets/images/notice@2x.png',
                 width: 25,
               ),
               const Text(

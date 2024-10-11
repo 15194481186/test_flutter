@@ -17,25 +17,24 @@ class _TabBarPageState extends State<TabBarPage> {
   List tabBarList = [
     {
       "title": "首页",
-      "default": "tabs/home_default.png",
-      "active": "tabs/home_active.png"
+      "default": "assets/tabs/home_default.png",
+      "active": "assets/tabs/home_active.png"
     },
     {
       "title": "我的",
-      "default": "tabs/my_default.png",
-      "active": "tabs/my_active.png"
+      "default": "assets/tabs/my_default.png",
+      "active": "assets/tabs/my_active.png"
     }
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-          child: IndexedStack(
+      body: IndexedStack(
         // tabBar的索引值
         index: currentIndex,
         children: const [HomePage(), MinePage()],
-      )),
+      ),
       // 底部导航条
       bottomNavigationBar: BottomNavigationBar(
           // 底部导航item的样式
