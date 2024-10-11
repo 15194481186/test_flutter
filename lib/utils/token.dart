@@ -17,7 +17,7 @@ class TokenManager {
   // 4. 提供init方法用于从本地获取token
   Future<void> init() async {
     final prefs = await SharedPreferences.getInstance();
-    _token = prefs.getString(_key);
+    _token = prefs.getString(_key) ?? '';
   }
 
   // 5. 提供saveToken方法用于存储token

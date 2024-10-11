@@ -1,5 +1,6 @@
 import 'package:enjoy_plus_hm/pages/home/index.dart';
 import 'package:enjoy_plus_hm/pages/mine/index.dart';
+import 'package:enjoy_plus_hm/utils/token.dart';
 import 'package:flutter/material.dart';
 
 class TabBarPage extends StatefulWidget {
@@ -26,6 +27,15 @@ class _TabBarPageState extends State<TabBarPage> {
       "active": "assets/tabs/my_active.png"
     }
   ];
+
+  @override
+  void initState() {
+    super.initState();
+
+    Future.delayed(Duration.zero, () async {
+      await TokenManager().init();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,11 +66,10 @@ class _TabBarPageState extends State<TabBarPage> {
     List<BottomNavigationBarItem> tempList = [];
     for (var item in tabBarList) {
       tempList.add(
-         BottomNavigationBarItem(
+        BottomNavigationBarItem(
             icon: Image.asset(item['default'], width: 25),
             activeIcon: Image.asset(item['active'], width: 25),
-            label: item['title']
-          ),
+            label: item['title']),
       );
     }
     return tempList;

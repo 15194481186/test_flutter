@@ -1,3 +1,4 @@
+import 'package:enjoy_plus_hm/utils/token.dart';
 import 'package:flutter/material.dart';
 
 class MinePage extends StatefulWidget {
@@ -66,40 +67,53 @@ class _MinePageState extends State<MinePage> {
                     ])
                   ]))),
           Container(
-              padding: const EdgeInsets.all(15),
-              margin: const EdgeInsets.only(
-                  top: 20, left: 10, right: 10, bottom: 20),
-              decoration: BoxDecoration(
-                  color: Colors.white, borderRadius: BorderRadius.circular(10)),
-              child: Column(
-                  children: menuList.map((item) {
-                return SizedBox(
-                    height: 50,
-                    child: Row(children: [
-                      Row(
-                        children: [
-                          Image.asset(
-                            item['icon'],
-                            width: 20,
-                            height: 20,
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          Text(
-                            item['title'],
-                            style: const TextStyle(fontSize: 16),
-                          )
-                        ],
-                      ),
-                      const Spacer(),
-                      const Icon(
-                        Icons.arrow_forward_ios,
-                        size: 12,
-                        color: Colors.grey,
-                      )
-                    ]));
-              }).toList()))
+            padding: const EdgeInsets.all(15),
+            margin:
+                const EdgeInsets.only(top: 20, left: 10, right: 10, bottom: 20),
+            decoration: BoxDecoration(
+                color: Colors.white, borderRadius: BorderRadius.circular(10)),
+            child: Column(
+                children: menuList.map((item) {
+              return SizedBox(
+                  height: 50,
+                  child: Row(children: [
+                    Row(
+                      children: [
+                        Image.asset(
+                          item['icon'],
+                          width: 20,
+                          height: 20,
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          item['title'],
+                          style: const TextStyle(fontSize: 16),
+                        )
+                      ],
+                    ),
+                    const Spacer(),
+                    const Icon(
+                      Icons.arrow_forward_ios,
+                      size: 12,
+                      color: Colors.grey,
+                    )
+                  ]));
+            }).toList()),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              TokenManager().saveToken('122121212121');
+            },
+            child: const Text('存储token'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              TokenManager().removeToken();
+            },
+            child: const Text('删除token'),
+          )
         ],
       ),
     );
