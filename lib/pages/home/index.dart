@@ -1,6 +1,7 @@
 import 'package:enjoy_plus_hm/pages/home/components/home_list.dart';
 import 'package:enjoy_plus_hm/pages/home/components/home_nav.dart';
 import 'package:enjoy_plus_hm/utils/http.dart';
+import 'package:enjoy_plus_hm/utils/toast.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -23,9 +24,12 @@ class _HomePageState extends State<HomePage> {
   getNotifyList() async {
     try {
       final res = await http.get('/announcement');
+      if(res['code'] != 10000) return ToastUtil.showError('获取数据失败');
       print(res);
+      ToastUtil.showSuccess('获取公告数据成功~');
     } catch (e) {
       print(e);
+      ToastUtil.showError('网络请求错误');
     }
   }
 
