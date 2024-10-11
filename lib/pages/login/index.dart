@@ -35,6 +35,11 @@ class _LoginPageState extends State<LoginPage> {
     });
   }
 
+
+  // 2. 定义两个控制器用于获取输入框中的值
+  final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _codeController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,9 +70,12 @@ class _LoginPageState extends State<LoginPage> {
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const Expanded(
+                   Expanded(
                     child: TextField(
-                      decoration: InputDecoration(
+                      controller: _phoneController,
+                      keyboardType: TextInputType.phone,
+                      maxLength: 11,
+                      decoration: const InputDecoration(
                         labelText: '手机号',
                         hintText: '请输入手机号',
                       ),
@@ -88,8 +96,11 @@ class _LoginPageState extends State<LoginPage> {
                 ],
               ),
               const SizedBox(height: 8),
-              const TextField(
-                decoration: InputDecoration(
+              TextField(
+                controller: _codeController,
+                keyboardType: TextInputType.number,
+                maxLength: 6,
+                decoration: const InputDecoration(
                   labelText: '验证码',
                   hintText: '请输入6位验证码',
                 ),
