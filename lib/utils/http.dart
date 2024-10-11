@@ -34,7 +34,7 @@ class NetworkService {
   }
 
   /// get请求
-  Future<void> get(String url, {Map<String, dynamic>? params}) async {
+  Future<dynamic> get(String url, {Map<String, dynamic>? params}) async {
     try {
       final res = await _dio.get(url, queryParameters: params);
       return handleResponse(res);
@@ -44,7 +44,7 @@ class NetworkService {
   }
 
   /// post请求
-  Future<void> post(String url, {Map<String, dynamic>? data}) async {
+  Future<dynamic> post(String url, {Map<String, dynamic>? data}) async {
     try {
       final res = await _dio.post(url, data: data);
       return handleResponse(res);
@@ -54,7 +54,7 @@ class NetworkService {
   }
 
   /// put请求
-  Future<void> put(String url, {Map<String, dynamic>? data}) async {
+  Future<dynamic> put(String url, {Map<String, dynamic>? data}) async {
     try {
       final res = await _dio.put(url, data: data);
       return handleResponse(res);
@@ -64,7 +64,7 @@ class NetworkService {
   }
 
   /// delete请求
-  Future<void> delete(String url, {Map<String, dynamic>? data}) async {
+  Future<dynamic> delete(String url, {Map<String, dynamic>? data}) async {
     try {
       final res = await _dio.delete(url, data: data);
       return handleResponse(res);
@@ -99,3 +99,6 @@ class NetworkService {
     }
   }
 }
+
+
+final http = NetworkService();

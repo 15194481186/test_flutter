@@ -1,5 +1,6 @@
 import 'package:enjoy_plus_hm/pages/home/components/home_list.dart';
 import 'package:enjoy_plus_hm/pages/home/components/home_nav.dart';
+import 'package:enjoy_plus_hm/utils/http.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -10,6 +11,24 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  List notifyList = [];
+
+  @override
+  void initState() {
+    super.initState();
+    getNotifyList();
+  }
+
+  /// 获取社区公告列表
+  getNotifyList() async {
+    try {
+      final res = await http.get('/announcement');
+      print(res);
+    } catch (e) {
+      print(e);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
