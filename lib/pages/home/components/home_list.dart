@@ -1,25 +1,9 @@
 import 'package:flutter/material.dart';
 
 class HomeList extends StatelessWidget {
-  HomeList({super.key});
+  HomeList({super.key, required this.notifyList});
 
-  List notifyList = [
-    {
-      'title': '中秋、国庆温馨提示中秋、国庆温馨提示',
-      'content': '中秋、国庆温馨提示中秋、国庆温馨提示中秋、国庆温馨提示中秋、国庆温馨提示中秋、国庆温馨提示中秋、国庆温馨提示',
-      'createdAt': '2024-09-22 15:00:00',
-    },
-    {
-      'title': '中秋、国庆温馨提示中秋、国庆温馨提示',
-      'content': '中秋、国庆温馨提示中秋、国庆温馨提示中秋、国庆温馨提示中秋、国庆温馨提示中秋、国庆温馨提示中秋、国庆温馨提示',
-      'createdAt': '2024-09-22 15:00:00',
-    },
-    {
-      'title': '中秋、国庆温馨提示中秋、国庆温馨提示',
-      'content': '中秋、国庆温馨提示中秋、国庆温馨提示中秋、国庆温馨提示中秋、国庆温馨提示中秋、国庆温馨提示中秋、国庆温馨提示',
-      'createdAt': '2024-09-22 15:00:00',
-    },
-  ];
+  List notifyList = [];
 
   @override
   Widget build(BuildContext context) {

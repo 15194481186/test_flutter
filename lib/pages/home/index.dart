@@ -25,10 +25,12 @@ class _HomePageState extends State<HomePage> {
     try {
       final res = await http.get('/announcement');
       if(res['code'] != 10000) return ToastUtil.showError('获取数据失败');
-      print(res);
+      // print(res);
+      setState(() {
+        notifyList = res['data'];
+      });
       ToastUtil.showSuccess('获取公告数据成功~');
     } catch (e) {
-      print(e);
       ToastUtil.showError('网络请求错误');
     }
   }
@@ -54,7 +56,7 @@ class _HomePageState extends State<HomePage> {
               child: Image.asset('assets/images/banner@2x.jpg'),
             ),
             // 社区公告
-            HomeList()
+            HomeList(notifyList: notifyList)
           ],
         ));
   }
