@@ -1,3 +1,5 @@
+import 'package:enjoy_plus_hm/utils/http.dart';
+import 'package:enjoy_plus_hm/utils/toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 
@@ -9,14 +11,34 @@ class NoticeDetail extends StatefulWidget {
 }
 
 class _NoticeDetailState extends State<NoticeDetail> {
-  Map notifyDetail = {
-    "id": "3",
-    "content":
-        "<p>尊敬的住户:</p>\r\n<p>你们好!现本小区已进入装修阶段,进出苑区人员日益增多,管理处为加强小区人员进出管理,确保苑区的安全和谐,须对苑区住户办理业主卡,住户须凭业主卡进出苑区。请业主于近期内到管理处办理,谢谢合作!</p>\r\n<p>办理业主卡需带资料:</p>\r\n<p>一、业主及家人:</p>\r\n<p>1寸照片2张,身份证复印件1张</p>\r\n<p>二、租住户:</p>\r\n<p>租房合同复件;身份证复件1份;1寸照片2张</p>\r\n<p>三、公司员工:</p>\r\n<p>租房合同复件(限租住户);公司营业执照复件1份;公司介绍信;身份证复件1张;1寸照片2张。</p>",
-    "title": "小区关于办理业主卡的通知",
-    "createdAt": "2022-09-11 14:16:57",
-    "creatorName": "传智教育"
-  };
+  Map notifyDetail = {};
+  
+  
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    Map args = ModalRoute.of(context)!.settings.arguments as Map;
+    if (args.isNotEmpty) {
+      getNotifyDetail(args['id']);
+    } else {
+      ToastUtil.showError('缺少参数');
+    }
+  }
+
+  getNotifyDetail(String id) async {
+    try {
+      final res = await http.get('/announcement/$id');
+      if(res['code'] != 10000) return ToastUtil.showError('获取数据失败');
+      ToastUtil.showSuccess('获取公告数据成功~');
+      setState(() {
+        notifyDetail = res['data'];
+      });
+    } catch (e) {
+      ToastUtil.showError('网络请求错误');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
