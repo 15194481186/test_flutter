@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:enjoy_plus_hm/utils/toast.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
@@ -35,10 +36,38 @@ class _LoginPageState extends State<LoginPage> {
     });
   }
 
-
   // 2. 定义两个控制器用于获取输入框中的值
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _codeController = TextEditingController();
+
+  // 3. 获取短信验证码
+  void _getCode() {
+    // 3.1 获取输入框中的值
+    String mobile = _phoneController.text;
+
+    // 3.2 对手机号进行校验(非空, 正则)
+    if (mobile.isEmpty) {
+      return ToastUtil.showError('请输入手机号');
+    }
+
+    RegExp reg = RegExp(r'^1[3-9]\d{9}$');
+    if (!reg.hasMatch(mobile)) {
+      return ToastUtil.showError('请输入合法的手机号');
+    }
+
+    // 3.3 调用获取验证码接口
+
+    // 3.4 开始倒计时
+
+    // 3.5 把验证码回显到验证码输入框中
+  }
+
+  @override
+  void dispose() {
+    _phoneController.dispose();
+    _codeController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +99,7 @@ class _LoginPageState extends State<LoginPage> {
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                   Expanded(
+                  Expanded(
                     child: TextField(
                       controller: _phoneController,
                       keyboardType: TextInputType.phone,
@@ -89,9 +118,14 @@ class _LoginPageState extends State<LoginPage> {
                       minimumSize: const Size(100, 50),
                     ),
                     onPressed: () {
-                      _startCountdown();
+                      _getCode();
                     },
-                    child: _isCountingdown ? Text('$_countdown s后重新获取', style: const TextStyle(color: Colors.grey),) : const Text('获取验证码'),
+                    child: _isCountingdown
+                        ? Text(
+                            '$_countdown s后重新获取',
+                            style: const TextStyle(color: Colors.grey),
+                          )
+                        : const Text('获取验证码'),
                   ),
                 ],
               ),
