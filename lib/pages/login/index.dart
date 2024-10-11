@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
@@ -8,6 +10,31 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  // 1. 获取短信验证码倒计时
+  int _countdown = 60;
+  bool _isCountingdown = false;
+  Timer? _timer;
+  void _startCountdown() {
+    // 1.1 判断是否在倒计时
+    if (_isCountingdown) {
+      return;
+    }
+    // 1.2 设置开始倒计时
+    _isCountingdown = true;
+    // 1.3 开启倒计时
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      setState(() {
+        if (_countdown > 0) {
+          _countdown--;
+        } else {
+          _isCountingdown = false;
+          _countdown = 60;
+          _timer!.cancel();
+        }
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,8 +80,10 @@ class _LoginPageState extends State<LoginPage> {
                       foregroundColor: const Color.fromARGB(255, 85, 145, 175),
                       minimumSize: const Size(100, 50),
                     ),
-                    onPressed: () {},
-                    child: const Text('获取验证码'),
+                    onPressed: () {
+                      _startCountdown();
+                    },
+                    child: _isCountingdown ? Text('$_countdown s后重新获取', style: const TextStyle(color: Colors.grey),) : const Text('获取验证码'),
                   ),
                 ],
               ),
