@@ -36,7 +36,7 @@ class HomeList extends StatelessWidget {
                 return GestureDetector(
                   onTap: () {
                     Navigator.pushNamed(context, '/detail',
-                        arguments: {'id': '10011xx'});
+                        arguments: {'id': item['id']});
                   },
                   child: Container(
                       padding: const EdgeInsets.only(top: 10, bottom: 10),
