@@ -41,7 +41,7 @@ class _MinePageState extends State<MinePage> {
               padding: const EdgeInsets.all(10),
               child: GestureDetector(
                   onTap: () {
-                    // Navigator.pushNamed(context, '/profile');
+                    Navigator.pushNamed(context, '/profile');
                   },
                   child: Row(children: [
                     Row(children: [

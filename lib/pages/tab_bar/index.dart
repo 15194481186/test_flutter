@@ -33,7 +33,9 @@ class _TabBarPageState extends State<TabBarPage> {
     super.initState();
 
     Future.delayed(Duration.zero, () async {
-      await TokenManager().init();
+      final token = TokenManager();
+      await token.init();
+      print(TokenManager().getToken());
     });
   }
 
