@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:enjoy_plus_hm/utils/evntbus.dart';
 import 'package:enjoy_plus_hm/utils/http.dart';
 import 'package:enjoy_plus_hm/utils/toast.dart';
 import 'package:enjoy_plus_hm/utils/token.dart';
@@ -105,6 +106,9 @@ class _LoginPageState extends State<LoginPage> {
     await tokenManager.saveToken(res['data']['token']);
     // 4.5 清除定时器
     _timer?.cancel();
+
+    eventBus.fire(RefreshMineEvent());
+
     // 4.6 返回上一页
     Navigator.pop(context);
   }

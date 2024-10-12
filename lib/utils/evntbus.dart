@@ -7,3 +7,9 @@ EventBus eventBus = EventBus();
 class LogoutEvent {
   LogoutEvent();
 }
+
+// 3. 登录成功刷新我的页面
+class RefreshMineEvent {
+  RefreshMineEvent();
+}
+

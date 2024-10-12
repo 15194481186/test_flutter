@@ -1,5 +1,6 @@
+import 'package:enjoy_plus_hm/utils/evntbus.dart';
 import 'package:enjoy_plus_hm/utils/http.dart';
-import 'package:enjoy_plus_hm/utils/token.dart';
+import 'package:enjoy_plus_hm/utils/toast.dart';
 import 'package:flutter/material.dart';
 
 class MinePage extends StatefulWidget {
@@ -29,16 +30,16 @@ class _MinePageState extends State<MinePage> {
   ];
 
   // 个人中心数据
-  Map userInfo = {
-    "id": "",
-    "avatar": "",
-    "nickName": ""
-  };
+  Map userInfo = {"id": "", "avatar": "", "nickName": null};
 
-  // 测试请求
-  void getHouse() async {
-    final res = await http.get('/room');
-    print(res);
+
+  @override
+  void initState() {
+    super.initState();
+
+    eventBus.on<RefreshMineEvent>().listen((event) {
+      getUserInfo();
+    });
   }
 
   // 当widget重新构建的时候，会调用这个方法
@@ -47,6 +48,21 @@ class _MinePageState extends State<MinePage> {
     super.didUpdateWidget(oldWidget);
     if (widget.currentIndex == 1) {
       // todo: 获取个人中心的数据
+      getUserInfo();
+    }
+  }
+
+  /// 获取个人中心数据
+  void getUserInfo() async {
+    try {
+      var res = await http.get('/userInfo');
+      if (res['code'] != 10000) return ToastUtil.showError('获取数据失败');
+      print(res['data']);
+      setState(() {
+        userInfo = res['data'];
+      });
+    } catch (e) {
+      ToastUtil.showError('网络请求错误');
     }
   }
 
@@ -82,11 +98,11 @@ class _MinePageState extends State<MinePage> {
                                   userInfo['avatar'],
                                   width: 40,
                                   height: 40,
-                              )
-                        ),
+                                )),
                       const SizedBox(width: 10),
-                       Text( '${userInfo['nickName'] ?? '暂无昵称' }',
-                          style: const TextStyle(fontSize: 16, color: Colors.white))
+                      Text('${userInfo['nickName'] ?? '请先登录'}',
+                          style: const TextStyle(
+                              fontSize: 16, color: Colors.white))
                     ]),
                     const Spacer(),
                     const Row(children: [
@@ -137,18 +153,6 @@ class _MinePageState extends State<MinePage> {
                   ]));
             }).toList()),
           ),
-          ElevatedButton(
-            onPressed: () {
-              getHouse();
-            },
-            child: const Text('获取需要token的接口数据'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              TokenManager().removeToken();
-            },
-            child: const Text('删除token'),
-          )
         ],
       ),
     );
