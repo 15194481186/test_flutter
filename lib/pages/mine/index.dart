@@ -32,7 +32,6 @@ class _MinePageState extends State<MinePage> {
   // 个人中心数据
   Map userInfo = {"id": "", "avatar": "", "nickName": null};
 
-
   @override
   void initState() {
     super.initState();
@@ -57,7 +56,7 @@ class _MinePageState extends State<MinePage> {
     try {
       var res = await http.get('/userInfo');
       if (res['code'] != 10000) return ToastUtil.showError('获取数据失败');
-      print(res['data']);
+      // print(res['data']);
       setState(() {
         userInfo = res['data'];
       });
@@ -82,7 +81,11 @@ class _MinePageState extends State<MinePage> {
               padding: const EdgeInsets.all(10),
               child: GestureDetector(
                   onTap: () {
-                    Navigator.pushNamed(context, '/profile');
+                    Navigator.pushNamed(
+                      context, 
+                      '/profile',
+                      arguments: userInfo
+                    );
                   },
                   child: Row(children: [
                     Row(children: [
