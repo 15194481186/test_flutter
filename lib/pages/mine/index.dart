@@ -30,7 +30,7 @@ class _MinePageState extends State<MinePage> {
   ];
 
   // 个人中心数据
-  Map userInfo = {"id": "", "avatar": "", "nickName": null};
+  Map userInfo = {"id": "", "avatar": null, "nickName": null};
 
   @override
   void initState() {
@@ -91,7 +91,7 @@ class _MinePageState extends State<MinePage> {
                     Row(children: [
                       ClipRRect(
                           borderRadius: BorderRadius.circular(50.0),
-                          child: userInfo['avatar'] == ''
+                          child: userInfo['avatar'] == null
                               ? Image.asset(
                                   'assets/images/avatar_1.jpg',
                                   width: 40,
@@ -103,7 +103,7 @@ class _MinePageState extends State<MinePage> {
                                   height: 40,
                                 )),
                       const SizedBox(width: 10),
-                      Text('${userInfo['nickName'] ?? '请先登录'}',
+                      Text('${userInfo['nickName'] ?? '默认用户'}',
                           style: const TextStyle(
                               fontSize: 16, color: Colors.white))
                     ]),

@@ -11,7 +11,7 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   // 状态变量: 用户信息
-  Map userInfo = {"id": "", "avatar": "", "nickName": null};
+  Map userInfo = {"id": "", "avatar": null, "nickName": null};
 
   final TextEditingController _nickNameController = TextEditingController();
 
@@ -21,7 +21,7 @@ class _ProfilePageState extends State<ProfilePage> {
     print(widget.userInfo);
     setState(() {
       userInfo = widget.userInfo;
-      _nickNameController.text = userInfo['nickName'];
+      _nickNameController.text = userInfo['nickName'] ?? '';
     });
   }
 
@@ -47,7 +47,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   children: [
                     ClipRRect(
                         borderRadius: BorderRadius.circular(50.0),
-                        child: userInfo['avatar'] != ''
+                        child: userInfo['avatar'] != null
                             ? Image.network(userInfo['avatar'])
                             : Image.asset('assets/images/avatar_1.jpg',
                                 width: 30, height: 30)),
