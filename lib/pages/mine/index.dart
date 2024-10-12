@@ -1,3 +1,4 @@
+import 'package:enjoy_plus_hm/utils/http.dart';
 import 'package:enjoy_plus_hm/utils/token.dart';
 import 'package:flutter/material.dart';
 
@@ -24,6 +25,12 @@ class _MinePageState extends State<MinePage> {
       "icon": "assets/images/visitor_profile_icon@2x.png",
     }
   ];
+  
+  // 测试请求
+  void getHouse() async {
+    final res = await http.get('/room');
+    print(res);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -104,9 +111,9 @@ class _MinePageState extends State<MinePage> {
           ),
           ElevatedButton(
             onPressed: () {
-              TokenManager().saveToken('122121212121');
+              getHouse();
             },
-            child: const Text('存储token'),
+            child: const Text('获取需要token的接口数据'),
           ),
           ElevatedButton(
             onPressed: () {
