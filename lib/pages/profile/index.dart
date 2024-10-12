@@ -47,6 +47,30 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
 
+  /// 上传图片
+  void uploadAvatar() {
+    showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return Container(
+              padding: const EdgeInsets.all(10),
+              child: const Column(
+                children: [
+                  ListTile(
+                    leading: Icon(Icons.camera_alt),
+                    title: Text('拍照'),
+                    trailing: Icon(Icons.arrow_forward_ios_rounded)
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.image),
+                    title: Text('相册'),
+                     trailing: Icon(Icons.arrow_forward_ios_rounded)
+                  )
+                ],
+              ));
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -73,12 +97,16 @@ class _ProfilePageState extends State<ProfilePage> {
                 const Spacer(),
                 Row(
                   children: [
-                    ClipRRect(
-                        borderRadius: BorderRadius.circular(50.0),
-                        child: userInfo['avatar'] != null
-                            ? Image.network(userInfo['avatar'])
-                            : Image.asset('assets/images/avatar_1.jpg',
-                                width: 30, height: 30)),
+                    GestureDetector(
+                        onTap: () {
+                          uploadAvatar();
+                        },
+                        child: ClipRRect(
+                            borderRadius: BorderRadius.circular(50.0),
+                            child: userInfo['avatar'] != null
+                                ? Image.network(userInfo['avatar'])
+                                : Image.asset('assets/images/avatar_1.jpg',
+                                    width: 30, height: 30))),
                     const Icon(Icons.arrow_forward_ios, size: 12)
                   ],
                 )
