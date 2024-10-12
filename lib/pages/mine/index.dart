@@ -131,30 +131,37 @@ class _MinePageState extends State<MinePage> {
                 children: menuList.map((item) {
               return SizedBox(
                   height: 50,
-                  child: Row(children: [
-                    Row(
-                      children: [
-                        Image.asset(
-                          item['icon'],
-                          width: 20,
-                          height: 20,
+                  child: GestureDetector(
+                    onTap: () {
+                       if(item['title'] == '我的房屋'){
+                          Navigator.pushNamed(context, '/house_list');
+                       }
+                    },
+                    child: Row(children: [
+                        Row(
+                          children: [
+                            Image.asset(
+                              item['icon'],
+                              width: 20,
+                              height: 20,
+                            ),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            Text(
+                              item['title'],
+                              style: const TextStyle(fontSize: 16),
+                            )
+                          ],
                         ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        Text(
-                          item['title'],
-                          style: const TextStyle(fontSize: 16),
+                        const Spacer(),
+                        const Icon(
+                          Icons.arrow_forward_ios,
+                          size: 12,
+                          color: Colors.grey,
                         )
-                      ],
-                    ),
-                    const Spacer(),
-                    const Icon(
-                      Icons.arrow_forward_ios,
-                      size: 12,
-                      color: Colors.grey,
-                    )
-                  ]));
+                      ])
+                  ));
             }).toList()),
           ),
         ],

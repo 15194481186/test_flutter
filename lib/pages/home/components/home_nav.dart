@@ -32,15 +32,21 @@ class HomeNav extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: navList.map((item) {
             return Expanded(
-                child: Column(
-              children: [
-                Image.asset(
-                  item['icon'],
-                  width: 35,
-                ),
-                Text(item['title']),
-              ],
-            ));
+                child: GestureDetector(
+                    onTap: () {
+                      if(item['title'] == '我的房屋'){
+                         Navigator.pushNamed(context, '/house_list');
+                      }
+                    },
+                    child: Column(
+                      children: [
+                        Image.asset(
+                          item['icon'],
+                          width: 35,
+                        ),
+                        Text(item['title']),
+                      ],
+                    )));
           }).toList()),
     );
   }

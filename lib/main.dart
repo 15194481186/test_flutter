@@ -1,4 +1,5 @@
 import 'package:enjoy_plus_hm/pages/home/detail.dart';
+import 'package:enjoy_plus_hm/pages/house/house_list.dart';
 import 'package:enjoy_plus_hm/pages/login/index.dart';
 import 'package:enjoy_plus_hm/pages/profile/index.dart';
 import 'package:enjoy_plus_hm/pages/tab_bar/index.dart';
@@ -29,6 +30,13 @@ void main() {
         if (settings.name == '/profile') {
           // print(settings.arguments);
           return MaterialPageRoute(builder: (context) => ProfilePage(userInfo: settings.arguments as Map));
+        }
+
+        // 去我的房屋列表
+        if (settings.name == '/house_list') {
+          return MaterialPageRoute(
+              builder: (context) =>
+                  const HouseList());
         }
 
         // 404页面
