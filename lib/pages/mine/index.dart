@@ -28,6 +28,13 @@ class _MinePageState extends State<MinePage> {
     }
   ];
 
+  // 个人中心数据
+  Map userInfo = {
+    "id": "",
+    "avatar": "",
+    "nickName": ""
+  };
+
   // 测试请求
   void getHouse() async {
     final res = await http.get('/room');
@@ -38,7 +45,7 @@ class _MinePageState extends State<MinePage> {
   @override
   void didUpdateWidget(covariant MinePage oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if(widget.currentIndex == 1){
+    if (widget.currentIndex == 1) {
       // todo: 获取个人中心的数据
     }
   }
@@ -65,11 +72,21 @@ class _MinePageState extends State<MinePage> {
                     Row(children: [
                       ClipRRect(
                           borderRadius: BorderRadius.circular(50.0),
-                          child: Image.asset('assets/images/avatar_1.jpg',
-                              width: 50, height: 50)),
+                          child: userInfo['avatar'] == ''
+                              ? Image.asset(
+                                  'assets/images/avatar_1.jpg',
+                                  width: 40,
+                                  height: 40,
+                                )
+                              : Image.network(
+                                  userInfo['avatar'],
+                                  width: 40,
+                                  height: 40,
+                              )
+                        ),
                       const SizedBox(width: 10),
-                      const Text('用户名',
-                          style: TextStyle(fontSize: 16, color: Colors.white))
+                       Text( '${userInfo['nickName'] ?? '暂无昵称' }',
+                          style: const TextStyle(fontSize: 16, color: Colors.white))
                     ]),
                     const Spacer(),
                     const Row(children: [
