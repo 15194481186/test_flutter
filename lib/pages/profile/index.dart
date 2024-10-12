@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:enjoy_plus_hm/utils/evntbus.dart';
 import 'package:enjoy_plus_hm/utils/http.dart';
 import 'package:enjoy_plus_hm/utils/toast.dart';
@@ -62,15 +63,27 @@ class _ProfilePageState extends State<ProfilePage> {
                       leading: const Icon(Icons.camera_alt),
                       title: const Text('拍照'),
                       trailing: const Icon(Icons.arrow_forward_ios_rounded),
-                      onTap: () {
-                        uploadAvatar('camera');
+                      onTap: () async {
+                        // 调用相机
+                        ImagePicker picker = ImagePicker();
+                        final XFile? photo =
+                            await picker.pickImage(source: ImageSource.camera);
+                        if (photo != null) {
+                          uploadAvatar(photo.path);
+                        }
                       }),
                   ListTile(
                       leading: const Icon(Icons.image),
                       title: const Text('相册'),
                       trailing: const Icon(Icons.arrow_forward_ios_rounded),
-                      onTap: () {
-                        uploadAvatar('gallery');
+                      onTap: () async {
+                        // 调用相册
+                        ImagePicker picker = ImagePicker();
+                        final XFile? image =
+                            await picker.pickImage(source: ImageSource.gallery);
+                        if (image != null) {
+                          uploadAvatar(image.path);
+                        }
                       })
                 ],
               ));
@@ -78,20 +91,23 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   /// 上传图片
-  uploadAvatar(String imageType) async {
-    ImagePicker picker = ImagePicker();
-    if (imageType == 'camera') {
-      // 调用相机
-      final XFile? photo = await picker.pickImage(source: ImageSource.camera);
-      if (photo != null) {
-        ToastUtil.showSuccess(photo.path);
-      }
-    } else if (imageType == 'gallery') {
-      // 调用相册
-      final XFile? image = await picker.pickImage(source: ImageSource.gallery);
-      if (image != null) {
-        ToastUtil.showSuccess(image.path);
-      }
+  uploadAvatar(String imagePath) async {
+    try {
+      // 1. 包装一个FormData对象
+      FormData fd = FormData.fromMap(
+          {"file": await MultipartFile.fromFile(imagePath), "type": "avatar"});
+      // 2. 调用上传接口
+      var res = await http.post('/upload', data: fd);
+      if (res['code'] != 10000) return ToastUtil.showError('上传图片失败');
+      // print(res);
+      setState(() {
+        userInfo['avatar'] = res['data']['url'];
+        ToastUtil.showSuccess('上传图片成功');
+      });
+    } catch (e) {
+      ToastUtil.showError('上传图片失败');
+    } finally {
+      Navigator.pop(context);
     }
   }
 

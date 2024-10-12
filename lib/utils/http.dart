@@ -51,7 +51,7 @@ class NetworkService {
   }
 
   /// post请求
-  Future<dynamic> post(String url, {Map<String, dynamic>? data}) async {
+  Future<dynamic> post(String url, {dynamic data}) async {
     try {
       final res = await _dio.post(url, data: data);
       return handleResponse(res);
