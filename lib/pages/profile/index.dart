@@ -2,6 +2,7 @@ import 'package:enjoy_plus_hm/utils/evntbus.dart';
 import 'package:enjoy_plus_hm/utils/http.dart';
 import 'package:enjoy_plus_hm/utils/toast.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ProfilePage extends StatefulWidget {
   ProfilePage({super.key, required this.userInfo});
@@ -48,27 +49,50 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   /// 上传图片
-  void uploadAvatar() {
+  void showBottomSheet() {
     showModalBottomSheet(
         context: context,
         builder: (context) {
           return Container(
               padding: const EdgeInsets.all(10),
-              child: const Column(
+              height: 180,
+              child: Column(
                 children: [
                   ListTile(
-                    leading: Icon(Icons.camera_alt),
-                    title: Text('拍照'),
-                    trailing: Icon(Icons.arrow_forward_ios_rounded)
-                  ),
+                      leading: const Icon(Icons.camera_alt),
+                      title: const Text('拍照'),
+                      trailing: const Icon(Icons.arrow_forward_ios_rounded),
+                      onTap: () {
+                        uploadAvatar('camera');
+                      }),
                   ListTile(
-                    leading: Icon(Icons.image),
-                    title: Text('相册'),
-                     trailing: Icon(Icons.arrow_forward_ios_rounded)
-                  )
+                      leading: const Icon(Icons.image),
+                      title: const Text('相册'),
+                      trailing: const Icon(Icons.arrow_forward_ios_rounded),
+                      onTap: () {
+                        uploadAvatar('gallery');
+                      })
                 ],
               ));
         });
+  }
+
+  /// 上传图片
+  uploadAvatar(String imageType) async {
+    ImagePicker picker = ImagePicker();
+    if (imageType == 'camera') {
+      // 调用相机
+      final XFile? photo = await picker.pickImage(source: ImageSource.camera);
+      if (photo != null) {
+        ToastUtil.showSuccess(photo.path);
+      }
+    } else if (imageType == 'gallery') {
+      // 调用相册
+      final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+      if (image != null) {
+        ToastUtil.showSuccess(image.path);
+      }
+    }
   }
 
   @override
@@ -99,7 +123,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   children: [
                     GestureDetector(
                         onTap: () {
-                          uploadAvatar();
+                          showBottomSheet();
                         },
                         child: ClipRRect(
                             borderRadius: BorderRadius.circular(50.0),
