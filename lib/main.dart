@@ -11,6 +11,7 @@ void main() {
       routes: {
         '/': (context) => const TabBarPage(),
         '/detail': (context) => const NoticeDetail(),
+        '/login': (context) => const LoginPage(),
       },
       // 获取用户跳转页面的路径
       

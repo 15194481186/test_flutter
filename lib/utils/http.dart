@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:enjoy_plus_hm/utils/evntbus.dart';
 import 'package:enjoy_plus_hm/utils/token.dart';
 
 class NetworkService {
@@ -23,7 +24,7 @@ class NetworkService {
         // 3.1 拿到token
         final token = TokenManager().getToken() ?? '';
         // 3.2 添加token到请求头
-        if(token.isNotEmpty){
+        if (token.isNotEmpty) {
           options.headers['Authorization'] = 'Bearer $token';
         }
         return handler.next(options);
@@ -89,13 +90,20 @@ class NetworkService {
   }
 
   /// 错误结果的处理
-  dynamic handleError(error) {
+  dynamic handleError(error) async {
     if (error is DioException) {
       if (error.type == DioExceptionType.connectionTimeout ||
           error.type == DioExceptionType.receiveTimeout) {
         throw Exception('网络连接超时');
       } else if (error.type == DioExceptionType.badResponse) {
-        throw Exception('响应错误，状态码：${error.response?.statusCode}');
+        if (error.response?.statusCode == 401) {
+          // 清除token
+          await TokenManager().removeToken();
+          // 通知跳转到登录页
+          eventBus.fire(LogoutEvent());
+        } else {
+          throw Exception('响应错误，状态码：${error.response?.statusCode}');
+        }
       } else {
         throw Exception('网络请求错误：$error');
       }

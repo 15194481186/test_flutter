@@ -1,5 +1,6 @@
 import 'package:enjoy_plus_hm/pages/home/index.dart';
 import 'package:enjoy_plus_hm/pages/mine/index.dart';
+import 'package:enjoy_plus_hm/utils/evntbus.dart';
 import 'package:enjoy_plus_hm/utils/token.dart';
 import 'package:flutter/material.dart';
 
@@ -36,6 +37,11 @@ class _TabBarPageState extends State<TabBarPage> {
       final token = TokenManager();
       await token.init();
       print(TokenManager().getToken());
+    });
+
+    // 注册跳转到登录页的通知接收
+    eventBus.on<LogoutEvent>().listen((event) {
+       Navigator.pushNamed(context, '/login');
     });
   }
 
