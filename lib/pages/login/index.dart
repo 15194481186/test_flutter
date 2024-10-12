@@ -99,14 +99,13 @@ class _LoginPageState extends State<LoginPage> {
       'code': code,
     });
     if (res['code'] != 10000) return ToastUtil.showError('登录失败');
-    print(res);
+    ToastUtil.showSuccess('登录成功');
     // 4.5 存储token
     TokenManager tokenManager =  TokenManager();
     await tokenManager.saveToken(res['data']['token']);
     // 4.5 清除定时器
     _timer?.cancel();
     // 4.6 返回上一页
-    // ignore: use_build_context_synchronously
     Navigator.pop(context);
   }
 

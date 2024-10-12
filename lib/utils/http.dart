@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:enjoy_plus_hm/utils/token.dart';
 
 class NetworkService {
   // 1. 创建一个dio实例对象
@@ -17,9 +18,14 @@ class NetworkService {
   // 3. 添加拦截器
   void _addInterceptors() {
     _dio.interceptors.add(InterceptorsWrapper(
-      onRequest: (options, handler) async {
+      onRequest: (options, handler) {
         // 请求拦截器：添加公共请求参数、token 等
-        // todo
+        // 3.1 拿到token
+        final token = TokenManager().getToken() ?? '';
+        // 3.2 添加token到请求头
+        if(token.isNotEmpty){
+          options.headers['Authorization'] = 'Bearer $token';
+        }
         return handler.next(options);
       },
       onResponse: (response, handler) {
@@ -73,7 +79,6 @@ class NetworkService {
     }
   }
 
-
   /// 成功结果的处理
   dynamic handleResponse(Response response) {
     if (response.statusCode! >= 200 && response.statusCode! < 300) {
@@ -99,6 +104,5 @@ class NetworkService {
     }
   }
 }
-
 
 final http = NetworkService();
