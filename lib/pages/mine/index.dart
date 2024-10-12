@@ -3,7 +3,9 @@ import 'package:enjoy_plus_hm/utils/token.dart';
 import 'package:flutter/material.dart';
 
 class MinePage extends StatefulWidget {
-  const MinePage({super.key});
+  MinePage({super.key, required this.currentIndex});
+
+  int currentIndex;
 
   @override
   State<MinePage> createState() => _MinePageState();
@@ -25,11 +27,20 @@ class _MinePageState extends State<MinePage> {
       "icon": "assets/images/visitor_profile_icon@2x.png",
     }
   ];
-  
+
   // 测试请求
   void getHouse() async {
     final res = await http.get('/room');
     print(res);
+  }
+
+  // 当widget重新构建的时候，会调用这个方法
+  @override
+  void didUpdateWidget(covariant MinePage oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if(widget.currentIndex == 1){
+      // todo: 获取个人中心的数据
+    }
   }
 
   @override

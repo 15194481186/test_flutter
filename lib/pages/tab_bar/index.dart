@@ -51,7 +51,7 @@ class _TabBarPageState extends State<TabBarPage> {
       body: IndexedStack(
         // tabBar的索引值
         index: currentIndex,
-        children: const [HomePage(), MinePage()],
+        children:  [const HomePage(), MinePage(currentIndex: currentIndex)],
       ),
       // 底部导航条
       bottomNavigationBar: BottomNavigationBar(
