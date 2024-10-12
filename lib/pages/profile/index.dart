@@ -1,3 +1,5 @@
+import 'package:enjoy_plus_hm/utils/http.dart';
+import 'package:enjoy_plus_hm/utils/toast.dart';
 import 'package:flutter/material.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -23,6 +25,25 @@ class _ProfilePageState extends State<ProfilePage> {
       userInfo = widget.userInfo;
       _nickNameController.text = userInfo['nickName'] ?? '';
     });
+  }
+
+  /// 修改昵称
+  void editNickName() async {
+    // 1. 获取输入的值
+    String nickName = _nickNameController.text;
+    if (nickName.isEmpty) {
+      return ToastUtil.showError('昵称不能为空');
+    }
+    if (nickName.length > 10) {
+      return ToastUtil.showError('昵称长度不能超过10个字符');
+    }
+    // 2. 发送请求
+    try {
+      await http.put('/userInfo', data: {'nickName': nickName});
+      ToastUtil.showSuccess('昵称修改成功');
+    } catch (e) {
+      ToastUtil.showError('网络出现问题');
+    }
   }
 
   @override
@@ -67,6 +88,10 @@ class _ProfilePageState extends State<ProfilePage> {
                   decoration: const InputDecoration(
                       hintText: '请输入昵称', border: InputBorder.none),
                   textAlign: TextAlign.right,
+                  // 输入内容结束
+                  onEditingComplete: () {
+                    editNickName();
+                  },
                 ),
               ),
               const Icon(Icons.arrow_forward_ios, size: 12)
