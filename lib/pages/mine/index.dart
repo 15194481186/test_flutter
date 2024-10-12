@@ -39,6 +39,10 @@ class _MinePageState extends State<MinePage> {
     eventBus.on<RefreshMineEvent>().listen((event) {
       getUserInfo();
     });
+
+    eventBus.on<BackMineEvent>().listen((event) {
+      getUserInfo();
+    });
   }
 
   // 当widget重新构建的时候，会调用这个方法
@@ -81,11 +85,8 @@ class _MinePageState extends State<MinePage> {
               padding: const EdgeInsets.all(10),
               child: GestureDetector(
                   onTap: () {
-                    Navigator.pushNamed(
-                      context, 
-                      '/profile',
-                      arguments: userInfo
-                    );
+                    Navigator.pushNamed(context, '/profile',
+                        arguments: userInfo);
                   },
                   child: Row(children: [
                     Row(children: [

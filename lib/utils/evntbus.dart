@@ -13,3 +13,7 @@ class RefreshMineEvent {
   RefreshMineEvent();
 }
 
+// 4. 从编辑个人信息回我的页面刷新
+class BackMineEvent {
+  BackMineEvent();
+}

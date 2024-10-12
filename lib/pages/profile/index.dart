@@ -1,3 +1,4 @@
+import 'package:enjoy_plus_hm/utils/evntbus.dart';
 import 'package:enjoy_plus_hm/utils/http.dart';
 import 'package:enjoy_plus_hm/utils/toast.dart';
 import 'package:flutter/material.dart';
@@ -51,10 +52,16 @@ class _ProfilePageState extends State<ProfilePage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text('个人信息'),
-        backgroundColor: Colors.transparent,
-        centerTitle: true,
-      ),
+          title: const Text('个人信息'),
+          backgroundColor: Colors.transparent,
+          centerTitle: true,
+          leading: IconButton(
+              onPressed: () {
+                // 发出通知
+                eventBus.fire(BackMineEvent());
+                Navigator.pop(context);
+              },
+              icon: const Icon(Icons.arrow_back))),
       body: ListView(
         padding: const EdgeInsets.all(10),
         children: [
