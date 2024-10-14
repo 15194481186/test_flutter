@@ -46,33 +46,36 @@ class _NoticeDetailState extends State<NoticeDetail> {
         appBar: AppBar(
           title: const Text('公告详情'),
         ),
-        body: ListView(children: [
-          Container(
-              padding: const EdgeInsets.all(10),
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // 标题
-                    Text(notifyDetail['title'] ?? '',
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        )),
-                    const SizedBox(height: 10),
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        body: notifyDetail.isEmpty ? const Center(
+          child: CircularProgressIndicator(),
+        ) : ListView(children: [
+                Container(
+                    padding: const EdgeInsets.all(10),
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(notifyDetail['creatorName'] ?? '',
-                              style: const TextStyle(color: Colors.grey)),
-                          Text(notifyDetail['createdAt'] ?? '',
-                              style: const TextStyle(color: Colors.grey))
-                        ]),
-                    const SizedBox(height: 10),
-                    // 内容
-                    Html(
-                      data: notifyDetail['content'] ?? '',
-                    )
-                  ]))
-        ]));
+                          // 标题
+                          Text(notifyDetail['title'] ?? '',
+                              style: const TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              )),
+                          const SizedBox(height: 10),
+                          Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(notifyDetail['creatorName'] ?? '',
+                                    style: const TextStyle(color: Colors.grey)),
+                                Text(notifyDetail['createdAt'] ?? '',
+                                    style: const TextStyle(color: Colors.grey))
+                              ]),
+                          const SizedBox(height: 10),
+                          // 内容
+                          Html(
+                            data: notifyDetail['content'] ?? '',
+                          )
+                        ]))
+              ])
+      );
   }
 }
