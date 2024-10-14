@@ -16,7 +16,9 @@ class _LocationListState extends State<LocationList> {
   String apiKey = 'ec6f580a9ed57f6731978c15a3a50fb1';
   String baseUrl = 'https://restapi.amap.com/v3';
 
+  // 地址和周边小区
   String currentAddress = '';
+  List nearbyCommunity = [];
 
   @override
   void initState() {
@@ -25,6 +27,7 @@ class _LocationListState extends State<LocationList> {
     requestLocationPermission();
 
     reverseGeocoding(40.065956, 116.350077);
+    queryNearbyCommunities(40.065956, 116.350077);
   }
 
   /// 检测是否配置位置授权
@@ -112,6 +115,36 @@ class _LocationListState extends State<LocationList> {
     }
   }
 
+  /// 获取附近小区
+  Future<void> queryNearbyCommunities(double latitude, double longitude) async {
+    try {
+      var res = await http.get(
+          '$baseUrl/place/around?key=$apiKey&location=$longitude,$latitude&radius=500&types=住宅小区');
+      setState(() {
+        nearbyCommunity = res['pois'];
+      });
+    } catch (e) {
+      print(e);
+      ToastUtil.showError('获取附近小区出现问题');
+    }
+  }
+
+  List<Widget> _buildCommunityItem(List community) {
+    List<Widget> temp = [];
+    for (var item in community) {
+      temp.add(Container(
+          color: Colors.white,
+          padding: const EdgeInsets.all(10),
+          child: Row(children: [
+            Expanded(child: Text('${item['name']}')),
+            const Row(children: [
+              Icon(Icons.arrow_forward_ios, size: 16, color: Colors.black),
+            ])
+          ])));
+    }
+    return temp;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -167,18 +200,8 @@ class _LocationListState extends State<LocationList> {
             ListView(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
-                children: [
-                  Container(
-                      color: Colors.white,
-                      padding: const EdgeInsets.all(10),
-                      child: const Row(children: [
-                        Expanded(child: Text('北京市昌平区政府街19号')),
-                        Row(children: [
-                          Icon(Icons.arrow_forward_ios,
-                              size: 16, color: Colors.black),
-                        ])
-                      ]))
-                ])
+                children: _buildCommunityItem(nearbyCommunity)
+            )
           ],
         ));
   }
