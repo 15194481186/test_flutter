@@ -22,7 +22,7 @@ class _RoomListState extends State<BuildingList> {
   @override
   void initState() {
     super.initState();
-    fakeData();  
+    fakeData();
   }
 
   // 随机产出3-8条数据
@@ -35,7 +35,7 @@ class _RoomListState extends State<BuildingList> {
     // 2. 单元和楼栋
     String type = size < 5 ? '单元' : '号楼';
     // 3. 更新
-     setState(() {
+    setState(() {
       data['point'] = widget.point;
       data['size'] = size;
       data['type'] = type;
@@ -50,16 +50,26 @@ class _RoomListState extends State<BuildingList> {
         ),
         body: ListView.builder(
           itemBuilder: (BuildContext context, int index) {
-            return Container(
-                color: Colors.white,
-                padding: const EdgeInsets.all(10),
-                child: Row(children: [
-                  Expanded(child: Text('${data['point']}${index+1}${data['type']}')),
-                  const Row(children: [
-                    Icon(Icons.arrow_forward_ios,
-                        size: 16, color: Colors.black),
-                  ])
-                ]));
+            return GestureDetector(
+                onTap: () {
+                  // 1. 跳转页面
+                  Navigator.pushNamed(context, '/room_list', arguments: {
+                    'point': data['point'],
+                    'building': '${index+1}${data['type']}'
+                  });
+                },
+                child: Container(
+                    color: Colors.white,
+                    padding: const EdgeInsets.all(10),
+                    child: Row(children: [
+                      Expanded(
+                          child: Text(
+                              '${data['point']}${index + 1}${data['type']}')),
+                      const Row(children: [
+                        Icon(Icons.arrow_forward_ios,
+                            size: 16, color: Colors.black),
+                      ])
+                    ])));
           },
           itemCount: data['size'],
         ));

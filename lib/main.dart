@@ -2,6 +2,7 @@ import 'package:enjoy_plus_hm/pages/home/detail.dart';
 import 'package:enjoy_plus_hm/pages/house/building_list.dart';
 import 'package:enjoy_plus_hm/pages/house/house_list.dart';
 import 'package:enjoy_plus_hm/pages/house/location_list.dart';
+import 'package:enjoy_plus_hm/pages/house/room_list.dart';
 import 'package:enjoy_plus_hm/pages/login/index.dart';
 import 'package:enjoy_plus_hm/pages/profile/index.dart';
 import 'package:enjoy_plus_hm/pages/tab_bar/index.dart';
@@ -31,33 +32,39 @@ void main() {
         // 去编辑个人信息页面
         if (settings.name == '/profile') {
           // print(settings.arguments);
-          return MaterialPageRoute(builder: (context) => ProfilePage(userInfo: settings.arguments as Map));
+          return MaterialPageRoute(
+              builder: (context) =>
+                  ProfilePage(userInfo: settings.arguments as Map));
         }
 
         // 去我的房屋列表
         if (settings.name == '/house_list') {
-          return MaterialPageRoute(
-              builder: (context) =>
-                  const HouseList());
+          return MaterialPageRoute(builder: (context) => const HouseList());
         }
 
         // 单元列表
         if (settings.name == '/location_list') {
-          return MaterialPageRoute(
-              builder: (context) =>
-                  const LocationList());
+          return MaterialPageRoute(builder: (context) => const LocationList());
         }
 
         // 楼栋列表
-         if (settings.name == '/building_list') {
+        if (settings.name == '/building_list') {
           return MaterialPageRoute(
               builder: (context) =>
-                  BuildingList(point: (settings.arguments as Map)['point'])
-            );
+                  BuildingList(point: (settings.arguments as Map)['point']));
+        }
+
+        // 房间列表
+        if (settings.name == '/room_list') {
+          Map temp = settings.arguments as Map;
+          return MaterialPageRoute(builder: (context) => RoomList(
+            point: temp['point'],
+            building: temp['building']
+          ));
         }
 
         // 没有匹配到 ---> 主页面
-        return MaterialPageRoute(builder: (context)=> const TabBarPage());
+        return MaterialPageRoute(builder: (context) => const TabBarPage());
       },
       initialRoute: '/',
     ),
