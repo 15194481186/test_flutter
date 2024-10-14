@@ -22,8 +22,23 @@ class _RoomListState extends State<BuildingList> {
   @override
   void initState() {
     super.initState();
-    setState(() {
+    fakeData();  
+  }
+
+  // 随机产出3-8条数据
+  // 如果数据<5, 则显示单元
+  // 如果数据>=5, 则显示楼栋
+  void fakeData() {
+    // 1. 产生随机数
+    Random random = Random();
+    int size = random.nextInt(6) + 3;
+    // 2. 单元和楼栋
+    String type = size < 5 ? '单元' : '号楼';
+    // 3. 更新
+     setState(() {
       data['point'] = widget.point;
+      data['size'] = size;
+      data['type'] = type;
     });
   }
 
@@ -39,14 +54,14 @@ class _RoomListState extends State<BuildingList> {
                 color: Colors.white,
                 padding: const EdgeInsets.all(10),
                 child: Row(children: [
-                  Expanded(child: Text('${data['point']}4单元')),
+                  Expanded(child: Text('${data['point']}${index+1}${data['type']}')),
                   const Row(children: [
                     Icon(Icons.arrow_forward_ios,
                         size: 16, color: Colors.black),
                   ])
                 ]));
           },
-          itemCount: 10,
+          itemCount: data['size'],
         ));
   }
 }
