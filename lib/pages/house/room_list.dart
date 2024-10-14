@@ -64,18 +64,22 @@ class _RoomListState extends State<RoomList> {
         ),
         body: ListView.builder(
           itemBuilder: (BuildContext context, int index) {
-            return Container(
-                color: Colors.white,
-                padding: const EdgeInsets.all(10),
-                child: Row(children: [
-                  Expanded(
-                      child: Text(
-                          '${data['point']}${data['building']}${data['rooms'][index]}室')),
-                  const Row(children: [
-                    Icon(Icons.arrow_forward_ios,
-                        size: 16, color: Colors.black),
-                  ])
-                ]));
+            return GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(context, '/house_form');
+                },
+                child: Container(
+                    color: Colors.white,
+                    padding: const EdgeInsets.all(10),
+                    child: Row(children: [
+                      Expanded(
+                          child: Text(
+                              '${data['point']}${data['building']}${data['rooms'][index]}室')),
+                      const Row(children: [
+                        Icon(Icons.arrow_forward_ios,
+                            size: 16, color: Colors.black),
+                      ])
+                    ])));
           },
           itemCount: (data['rooms'] as List).length,
         ));
