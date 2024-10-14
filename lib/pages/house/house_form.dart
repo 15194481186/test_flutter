@@ -18,6 +18,39 @@ class _HouseFormState extends State<HouseForm> {
     'idcardFrontUrl': 'assets/images/idcard1.png', // 身份证正面
     'idcardBackUrl': 'assets/images/idcard2.png', // 身份证背面
   };
+
+   Widget _buildAddIdcardPhoto(String tag, String info) {
+    return const Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Icon(Icons.add, size: 30, color: Color.fromARGB(255, 85, 145, 175)),
+          Text(
+            '上传人像面照片',
+            style: TextStyle(color: Color.fromARGB(255, 85, 145, 175)),
+          ),
+        ]);
+  }
+
+  Widget _buildIdcardPhoto(String tag, String photoUrl) {
+    return Stack(children: [
+      SizedBox(
+          width: MediaQuery.of(context).size.width - 20,
+          height: 300,
+          child: Image.asset(photoUrl, fit: BoxFit.contain)),
+      Positioned(
+          right: 0,
+          top: 0,
+          child: GestureDetector(
+            child: const Icon(Icons.delete, color: Colors.red),
+            onTap: () {
+              setState(() {
+                _formData[tag] = '';
+              });
+            },
+          ))
+    ]);
+  }
   
   @override
   Widget build(BuildContext context) {
@@ -30,7 +63,7 @@ class _HouseFormState extends State<HouseForm> {
           alignment: AlignmentDirectional.bottomEnd,
           children: [
             ListView(
-              padding: const EdgeInsets.only(top: 10, bottom: 10),
+              padding: const EdgeInsets.only(top: 10, bottom: 40),
               children: [
                 // 房屋信息
                 Container(
@@ -114,10 +147,44 @@ class _HouseFormState extends State<HouseForm> {
                           border: InputBorder.none,
                         )),
                   ),
+               // 业主信息
+                Container(
+                  padding: const EdgeInsets.all(10),
+                  child: const Text('本人身份证照片',
+                      style: TextStyle(
+                          color: Color.fromARGB(255, 97, 94, 94), fontSize: 16)),
+                ),
+                Container(
+                  padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
+                  child: const Text('请拍摄证件原件，并使照片中证件边缘完整，文字清晰，光线均匀。',
+                      style: TextStyle(
+                          color: Color.fromARGB(255, 97, 94, 94), fontSize: 12)),
+                ),
+                // 身份证正面
+                Container(
+                    color: Colors.white,
+                    height: 320,
+                    padding: const EdgeInsets.all(10),
+                    child: _formData['idcardFrontUrl'] == ''
+                        ? _buildAddIdcardPhoto('idcardFrontUrl', '上传人像面照片')
+                        : _buildIdcardPhoto(
+                            'idcardFrontUrl', _formData['idcardFrontUrl'])),
+                const SizedBox(height: 20),
+                // 身份证反面
+                Container(
+                    color: Colors.white,
+                    height: 320,
+                    padding: const EdgeInsets.all(10),
+                    child: _formData['idcardBackUrl'] == ''
+                        ? _buildAddIdcardPhoto('idcardBackUrl', '上传国徽面照片')
+                        : _buildIdcardPhoto(
+                            'idcardBackUrl', _formData['idcardBackUrl'])),
+                const SizedBox(height: 20),
               ],
             ),
             Container(
                 padding: const EdgeInsets.all(10),
+                color: Colors.white,
                 height: 70,
                 width: MediaQuery.of(context).size.width,
                 child: ElevatedButton(
