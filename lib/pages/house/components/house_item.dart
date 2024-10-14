@@ -1,13 +1,23 @@
 import 'package:flutter/material.dart';
 
 class HouseItem extends StatefulWidget {
-  const HouseItem({super.key});
+  HouseItem({super.key, required this.houseInfo});
+
+  Map houseInfo;
 
   @override
   State<HouseItem> createState() => _HouseItemState();
 }
 
 class _HouseItemState extends State<HouseItem> {
+  Map houseInfo = {};
+
+  @override
+  void initState() {
+    super.initState();
+    houseInfo = widget.houseInfo;
+  }
+
   Widget tagBuilder(int status) {
     List tagList = [
       {},
@@ -16,12 +26,12 @@ class _HouseItemState extends State<HouseItem> {
         "textColor": const Color.fromARGB(255, 85, 145, 175),
         "title": "审核中"
       },
-       {
+      {
         "bgColor": const Color.fromARGB(255, 91, 243, 91),
         "textColor": const Color.fromRGBO(1, 50, 1, 1),
         "title": "审核成功"
       },
-       {
+      {
         "bgColor": const Color.fromARGB(255, 247, 129, 133),
         "textColor": const Color.fromARGB(255, 84, 1, 1),
         "title": "审核失败"
@@ -33,7 +43,7 @@ class _HouseItemState extends State<HouseItem> {
         decoration: BoxDecoration(
             color: tagList[status]['bgColor'],
             borderRadius: BorderRadius.circular(5)),
-        child:  Text('${tagList[status]['title']}',
+        child: Text('${tagList[status]['title']}',
             style: TextStyle(color: tagList[status]['textColor'])));
   }
 
@@ -48,37 +58,37 @@ class _HouseItemState extends State<HouseItem> {
           children: [
             Row(
               children: [
-                const Expanded(child: Text('仙基公寓')),
+                Expanded(child: Text('${houseInfo['point']}')),
                 const Spacer(),
-                tagBuilder(3)
+                tagBuilder(houseInfo['status'])
               ],
             ),
             const SizedBox(height: 15),
-            const Row(
+            Row(
               children: [
-                Text(
+                const Text(
                   '房间号',
                   style: TextStyle(color: Colors.grey),
                 ),
-                Spacer(),
+                const Spacer(),
                 Expanded(
                     child: Text(
-                  '1栋2003室',
+                  '${houseInfo['building']}${houseInfo['room']}室',
                   textAlign: TextAlign.right,
                 )),
               ],
             ),
             const SizedBox(height: 15),
-            const Row(
+            Row(
               children: [
-                Text(
+                const Text(
                   '业主',
                   style: TextStyle(color: Colors.grey),
                 ),
-                Spacer(),
+                const Spacer(),
                 Expanded(
                     child: Text(
-                  '张继科',
+                  '${houseInfo['name']}',
                   textAlign: TextAlign.right,
                 )),
               ],

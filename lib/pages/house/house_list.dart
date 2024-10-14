@@ -1,4 +1,6 @@
 import 'package:enjoy_plus_hm/pages/house/components/house_item.dart';
+import 'package:enjoy_plus_hm/utils/http.dart';
+import 'package:enjoy_plus_hm/utils/toast.dart';
 import 'package:flutter/material.dart';
 
 class HouseList extends StatefulWidget {
@@ -9,6 +11,28 @@ class HouseList extends StatefulWidget {
 }
 
 class _HouseListState extends State<HouseList> {
+  List houseList = [];
+
+  @override
+  void initState() {
+    super.initState();
+    getHouseList();
+  }
+
+  /// 获取房屋列表
+  void getHouseList() async {
+    try {
+      var res = await http.get('/room');
+      if (res['code'] != 10000) return ToastUtil.showError('获取房屋列表失败');
+      ToastUtil.showSuccess('获取房屋列表成功!');
+      setState(() {
+        houseList = res['data'];
+      });
+    } catch (e) {
+      ToastUtil.showError('网络请求出现问题');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,15 +48,15 @@ class _HouseListState extends State<HouseList> {
           children: [
             ListView.separated(
                 itemBuilder: (BuildContext context, int index) {
-                  return const HouseItem();
+                  return HouseItem(houseInfo: houseList[index]);
                 },
                 separatorBuilder: (BuildContext context, int index) {
-                   return Container(
+                  return Container(
                     height: 10,
                     color: const Color.fromARGB(255, 241, 238, 238),
                   );
                 },
-                itemCount: 5),
+                itemCount: houseList.length),
             Container(
                 padding: const EdgeInsets.all(10),
                 height: 70,
