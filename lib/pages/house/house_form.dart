@@ -22,19 +22,19 @@ class _HouseFormState extends State<HouseForm> {
               children: const [Text('列表')],
             ),
             Container(
-              padding: const EdgeInsets.all(10),
-              width: MediaQuery.of(context).size.width,
-              height: 85,
-              child: ElevatedButton(
-                    onPressed: () {},
+                padding: const EdgeInsets.all(10),
+                height: 70,
+                width: MediaQuery.of(context).size.width,
+                child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/location_list');
+                    },
                     child: const Column(
-                      children: [
-                        SizedBox(height: 10),
-                        Icon(Icons.exit_to_app), 
-                        Text('提交审核'),
-                        SizedBox(height: 10), 
-                      ],
-                    ))
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [Icon(Icons.exit_to_app), Text('提交审核')],
+                    )
+                )
             )
           ],
         ));
