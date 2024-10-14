@@ -129,6 +129,7 @@ class _LocationListState extends State<LocationList> {
     }
   }
 
+  /// 构建小区列表
   List<Widget> _buildCommunityItem(List community) {
     List<Widget> temp = [];
     for (var item in community) {

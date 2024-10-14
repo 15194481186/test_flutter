@@ -12,6 +12,7 @@ class HouseList extends StatefulWidget {
 
 class _HouseListState extends State<HouseList> {
   List houseList = [];
+  bool isLoadData = false;
 
   @override
   void initState() {
@@ -22,11 +23,15 @@ class _HouseListState extends State<HouseList> {
   /// 获取房屋列表
   void getHouseList() async {
     try {
+      setState(() {
+        isLoadData = true;
+      });
       var res = await http.get('/room');
       if (res['code'] != 10000) return ToastUtil.showError('获取房屋列表失败');
       ToastUtil.showSuccess('获取房屋列表成功!');
       setState(() {
         houseList = res['data'];
+        isLoadData = false;
       });
     } catch (e) {
       ToastUtil.showError('网络请求出现问题');
@@ -41,7 +46,7 @@ class _HouseListState extends State<HouseList> {
           backgroundColor: Colors.transparent,
           centerTitle: true,
         ),
-        body: houseList.isEmpty
+        body: isLoadData
             ? const Center(
                 child: CircularProgressIndicator(),
               )
