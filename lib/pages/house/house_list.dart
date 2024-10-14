@@ -36,14 +36,16 @@ class _HouseListState extends State<HouseList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('我的房屋'),
-        backgroundColor: Colors.transparent,
-        centerTitle: true,
-      ),
-      body: houseList.isEmpty ? const Center(
-        child: CircularProgressIndicator(),
-      ) : Container(
+        appBar: AppBar(
+          title: const Text('我的房屋'),
+          backgroundColor: Colors.transparent,
+          centerTitle: true,
+        ),
+        body: houseList.isEmpty
+            ? const Center(
+                child: CircularProgressIndicator(),
+              )
+            : Container(
                 padding: const EdgeInsets.all(10),
                 child: Stack(
                   alignment: AlignmentDirectional.bottomEnd,
@@ -64,7 +66,9 @@ class _HouseListState extends State<HouseList> {
                         height: 70,
                         width: MediaQuery.of(context).size.width,
                         child: ElevatedButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.pushNamed(context, '/location_list');
+                            },
                             child: const Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
@@ -72,7 +76,6 @@ class _HouseListState extends State<HouseList> {
                             )))
                   ],
                 ),
-              )
-    );
+              ));
   }
 }

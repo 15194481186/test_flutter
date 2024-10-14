@@ -1,5 +1,6 @@
 import 'package:enjoy_plus_hm/pages/home/detail.dart';
 import 'package:enjoy_plus_hm/pages/house/house_list.dart';
+import 'package:enjoy_plus_hm/pages/house/location_list.dart';
 import 'package:enjoy_plus_hm/pages/login/index.dart';
 import 'package:enjoy_plus_hm/pages/profile/index.dart';
 import 'package:enjoy_plus_hm/pages/tab_bar/index.dart';
@@ -39,8 +40,15 @@ void main() {
                   const HouseList());
         }
 
-        // 404页面
-        return null;
+        // 去我的房屋列表
+        if (settings.name == '/location_list') {
+          return MaterialPageRoute(
+              builder: (context) =>
+                  const LocationList());
+        }
+
+        // 没有匹配到 ---> 主页面
+        return MaterialPageRoute(builder: (context)=> const TabBarPage());
       },
       initialRoute: '/',
     ),
