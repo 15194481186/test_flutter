@@ -1,5 +1,7 @@
 import 'package:enjoy_plus_hm/utils/toast.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class LocationList extends StatefulWidget {
@@ -23,11 +25,66 @@ class _LocationListState extends State<LocationList> {
       PermissionStatus status = await Permission.location.request();
       if (status.isGranted) {
         ToastUtil.showSuccess('位置授权成功');
+        getCurrentLocation();
       } else {
         ToastUtil.showError('位置授权失败');
       }
     } catch (e) {
       print(e);
+    }
+  }
+
+  /// 获取当前位置的经纬度
+  Future<void> getCurrentLocation() async {
+    late LocationSettings locationSettings;
+
+    if (defaultTargetPlatform == TargetPlatform.android) {
+      // 针对Android平台，设置高精度定位、100米距离过滤、强制使用位置管理器等
+      locationSettings = AndroidSettings(
+          accuracy: LocationAccuracy.high,
+          distanceFilter: 100,
+          forceLocationManager: true,
+          intervalDuration: const Duration(seconds: 10),
+          foregroundNotificationConfig: const ForegroundNotificationConfig(
+            notificationText:
+                "Example app will continue to receive your location even when you aren't using it",
+            notificationTitle: "Running in Background",
+            enableWakeLock: true,
+          ));
+    } else if (defaultTargetPlatform == TargetPlatform.iOS ||
+        defaultTargetPlatform == TargetPlatform.macOS) {
+      // 针对iOS和macOS平台，设置高精度定位、健身活动类型、100米距离过滤等
+      locationSettings = AppleSettings(
+        accuracy: LocationAccuracy.high,
+        activityType: ActivityType.fitness,
+        distanceFilter: 100,
+        pauseLocationUpdatesAutomatically: true,
+        // 只有在应用在后台启动时才设置为true
+        showBackgroundLocationIndicator: false,
+      );
+    } else if (kIsWeb) {
+      // 针对Web环境，设置高精度定位、100米距离过滤、5分钟的最大年龄等
+      locationSettings = WebSettings(
+        accuracy: LocationAccuracy.high,
+        distanceFilter: 100,
+        maximumAge: const Duration(minutes: 5),
+      );
+    } else {
+      // 对于其他平台，默认设置高精度定位和100米距离过滤
+      locationSettings = const LocationSettings(
+        accuracy: LocationAccuracy.high,
+        distanceFilter: 100,
+      );
+    }
+
+    try {
+      Position position = await Geolocator.getCurrentPosition(
+          locationSettings: locationSettings);
+      ToastUtil.showSuccess('经纬度：${position.latitude},${position.longitude}');
+      // TODO: 使用经纬度进行定位
+    } catch (e) {
+      print(e);
+      ToastUtil.showError('获取经纬度出现为题');
     }
   }
 
