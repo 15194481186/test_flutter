@@ -1,4 +1,6 @@
+import 'package:enjoy_plus_hm/utils/toast.dart';
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class LocationList extends StatefulWidget {
   const LocationList({super.key});
@@ -8,6 +10,27 @@ class LocationList extends StatefulWidget {
 }
 
 class _LocationListState extends State<LocationList> {
+  @override
+  void initState() {
+    super.initState();
+    // 1. 检测是否配置位置授权
+    requestLocationPermission();
+  }
+
+  /// 检测是否配置位置授权
+  Future<void> requestLocationPermission() async {
+    try {
+      PermissionStatus status = await Permission.location.request();
+      if (status.isGranted) {
+        ToastUtil.showSuccess('位置授权成功');
+      } else {
+        ToastUtil.showError('位置授权失败');
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
