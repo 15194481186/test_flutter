@@ -1,3 +1,4 @@
+import 'package:enjoy_plus_hm/utils/http.dart';
 import 'package:enjoy_plus_hm/utils/toast.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -12,11 +13,18 @@ class LocationList extends StatefulWidget {
 }
 
 class _LocationListState extends State<LocationList> {
+  String apiKey = 'ec6f580a9ed57f6731978c15a3a50fb1';
+  String baseUrl = 'https://restapi.amap.com/v3';
+
+  String currentAddress = '';
+
   @override
   void initState() {
     super.initState();
     // 1. 检测是否配置位置授权
     requestLocationPermission();
+
+    reverseGeocoding(40.065956, 116.350077);
   }
 
   /// 检测是否配置位置授权
@@ -26,6 +34,7 @@ class _LocationListState extends State<LocationList> {
       if (status.isGranted) {
         ToastUtil.showSuccess('位置授权成功');
         getCurrentLocation();
+        // reverseGeocoding(40.065956, 116.350077);
       } else {
         ToastUtil.showError('位置授权失败');
       }
@@ -82,9 +91,24 @@ class _LocationListState extends State<LocationList> {
           locationSettings: locationSettings);
       ToastUtil.showSuccess('经纬度：${position.latitude},${position.longitude}');
       // TODO: 使用经纬度进行定位
+      // reverseGeocoding(position.latitude, position.longitude);
     } catch (e) {
       print(e);
       ToastUtil.showError('获取经纬度出现为题');
+    }
+  }
+
+  /// 逆地址解析
+  Future<void> reverseGeocoding(double latitude, double longitude) async {
+    try {
+      var res = await http.get(
+          '$baseUrl/geocode/regeo?key=$apiKey&location=$longitude,$latitude');
+      setState(() {
+        currentAddress = res['regeocode']['formatted_address'];
+      });
+    } catch (e) {
+      print(e);
+      ToastUtil.showError('逆地址解析出现为题');
     }
   }
 
@@ -109,20 +133,24 @@ class _LocationListState extends State<LocationList> {
             Container(
               color: Colors.white,
               padding: const EdgeInsets.all(10),
-              child: const Row(
+              child: Row(
                 children: [
-                  Expanded(child: Text('北京市昌平区政府街19号')),
-                  Row(
-                    children: [
-                      Icon(Icons.location_searching_outlined,
-                          color: Colors.blue),
-                      SizedBox(width: 2),
-                      Text(
-                        '重新定位',
-                        style: TextStyle(color: Colors.blue),
-                      ),
-                    ],
-                  )
+                  Expanded(child: Text(currentAddress)),
+                  GestureDetector(
+                      onTap: () {
+                        reverseGeocoding(40.065956, 116.350077);
+                      },
+                      child: const Row(
+                        children: [
+                          Icon(Icons.location_searching_outlined,
+                              color: Colors.blue),
+                          SizedBox(width: 2),
+                          Text(
+                            '重新定位',
+                            style: TextStyle(color: Colors.blue),
+                          ),
+                        ],
+                      ))
                 ],
               ),
             ),
