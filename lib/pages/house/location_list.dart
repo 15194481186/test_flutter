@@ -133,15 +133,22 @@ class _LocationListState extends State<LocationList> {
   List<Widget> _buildCommunityItem(List community) {
     List<Widget> temp = [];
     for (var item in community) {
-      temp.add(Container(
-          color: Colors.white,
-          padding: const EdgeInsets.all(10),
-          child: Row(children: [
-            Expanded(child: Text('${item['name']}')),
-            const Row(children: [
-              Icon(Icons.arrow_forward_ios, size: 16, color: Colors.black),
-            ])
-          ])));
+      temp.add(GestureDetector(
+          onTap: () {
+            Navigator.pushNamed(context, '/building_list', arguments: {
+               // 小区的名称
+              'point': item['name']
+            });
+          },
+          child: Container(
+              color: Colors.white,
+              padding: const EdgeInsets.all(10),
+              child: Row(children: [
+                Expanded(child: Text('${item['name']}')),
+                const Row(children: [
+                  Icon(Icons.arrow_forward_ios, size: 16, color: Colors.black),
+                ])
+              ]))));
     }
     return temp;
   }
@@ -201,8 +208,7 @@ class _LocationListState extends State<LocationList> {
             ListView(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
-                children: _buildCommunityItem(nearbyCommunity)
-            )
+                children: _buildCommunityItem(nearbyCommunity))
           ],
         ));
   }
