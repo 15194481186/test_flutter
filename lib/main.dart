@@ -68,7 +68,7 @@ void main() {
         if (settings.name == '/house_form') {
           return MaterialPageRoute(
               builder: (context) =>
-                  const HouseForm());
+                  HouseForm(houseInfo: settings.arguments as Map));
         }
 
         // 没有匹配到 ---> 主页面

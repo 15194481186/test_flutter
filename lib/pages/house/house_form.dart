@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 
 class HouseForm extends StatefulWidget {
-  const HouseForm({super.key});
+  HouseForm({super.key, required this.houseInfo});
+
+  Map houseInfo;
 
   @override
   State<HouseForm> createState() => _HouseFormState();
 }
 
 class _HouseFormState extends State<HouseForm> {
-   final Map _formData = {
+  final Map _formData = {
     'point': '', // 小区信息
     'building': '', // 小区楼栋信息
     'room': '', // 小区房间信息
@@ -19,7 +21,15 @@ class _HouseFormState extends State<HouseForm> {
     'idcardBackUrl': 'assets/images/idcard2.png', // 身份证背面
   };
 
-   Widget _buildAddIdcardPhoto(String tag, String info) {
+  @override
+  initState() {
+    super.initState();
+    setState(() {
+      _formData.addAll(widget.houseInfo);
+    });
+  }
+
+  Widget _buildAddIdcardPhoto(String tag, String info) {
     return const Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -51,7 +61,7 @@ class _HouseFormState extends State<HouseForm> {
           ))
     ]);
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -77,7 +87,7 @@ class _HouseFormState extends State<HouseForm> {
                   color: Colors.white,
                   padding: const EdgeInsets.only(
                       left: 10, right: 10, top: 15, bottom: 15),
-                  child: const Text('仙基公寓4单元 1602'),
+                  child: Text('${_formData['point']}${_formData['building']}${_formData['room']}室'),
                 ),
                 // 业主信息
                 Container(
@@ -92,16 +102,15 @@ class _HouseFormState extends State<HouseForm> {
                   color: Colors.white,
                   padding: const EdgeInsets.only(left: 10, right: 10),
                   child: const TextField(
-                    maxLength: 15,
-                    decoration: InputDecoration(
-                      labelText: '姓名',
-                      hintText: '请输入业主姓名',
-                      hintStyle: TextStyle(color: Colors.grey),
-                      border: InputBorder.none,
-                    )
-                  ),
+                      maxLength: 15,
+                      decoration: InputDecoration(
+                        labelText: '姓名',
+                        hintText: '请输入业主姓名',
+                        hintStyle: TextStyle(color: Colors.grey),
+                        border: InputBorder.none,
+                      )),
                 ),
-                 // 性别
+                // 性别
                 Container(
                     color: Colors.white,
                     padding: const EdgeInsets.only(left: 10, right: 10),
@@ -133,32 +142,35 @@ class _HouseFormState extends State<HouseForm> {
                       ),
                       const Text('女'),
                     ])),
-                  // 业主手机号
-                  Container(
-                    color: Colors.white,
-                    padding: const EdgeInsets.only(left: 10, right: 10),
-                    child: const TextField(
-                        keyboardType: TextInputType.phone,
-                        maxLength: 11,
-                        decoration: InputDecoration(
-                          labelText: '手机号',
-                          hintText: '请输入您的手机号',
-                          hintStyle: TextStyle(color: Colors.grey),
-                          border: InputBorder.none,
-                        )),
-                  ),
-               // 业主信息
+                // 业主手机号
+                Container(
+                  color: Colors.white,
+                  padding: const EdgeInsets.only(left: 10, right: 10),
+                  child: const TextField(
+                      keyboardType: TextInputType.phone,
+                      maxLength: 11,
+                      decoration: InputDecoration(
+                        labelText: '手机号',
+                        hintText: '请输入您的手机号',
+                        hintStyle: TextStyle(color: Colors.grey),
+                        border: InputBorder.none,
+                      )),
+                ),
+                // 业主信息
                 Container(
                   padding: const EdgeInsets.all(10),
                   child: const Text('本人身份证照片',
                       style: TextStyle(
-                          color: Color.fromARGB(255, 97, 94, 94), fontSize: 16)),
+                          color: Color.fromARGB(255, 97, 94, 94),
+                          fontSize: 16)),
                 ),
                 Container(
-                  padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
+                  padding:
+                      const EdgeInsets.only(left: 10, right: 10, bottom: 10),
                   child: const Text('请拍摄证件原件，并使照片中证件边缘完整，文字清晰，光线均匀。',
                       style: TextStyle(
-                          color: Color.fromARGB(255, 97, 94, 94), fontSize: 12)),
+                          color: Color.fromARGB(255, 97, 94, 94),
+                          fontSize: 12)),
                 ),
                 // 身份证正面
                 Container(
@@ -195,9 +207,7 @@ class _HouseFormState extends State<HouseForm> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [Icon(Icons.exit_to_app), Text('提交审核')],
-                    )
-                )
-            )
+                    )))
           ],
         ));
   }

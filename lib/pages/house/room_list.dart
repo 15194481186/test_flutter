@@ -66,7 +66,15 @@ class _RoomListState extends State<RoomList> {
           itemBuilder: (BuildContext context, int index) {
             return GestureDetector(
                 onTap: () {
-                  Navigator.pushNamed(context, '/house_form');
+                  Navigator.pushNamed(
+                    context, 
+                    '/house_form',
+                    arguments: {
+                      'point': data['point'],
+                      'building': data['building'],
+                      'room': data['rooms'][index]
+                    }
+                  );
                 },
                 child: Container(
                     color: Colors.white,
