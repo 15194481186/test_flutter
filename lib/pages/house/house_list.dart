@@ -21,9 +21,9 @@ class _HouseListState extends State<HouseList> {
     getHouseList();
 
     eventBus.on<RereshHouseList>().listen((event) {
-      // setState(() {
-      //   houseList = [];
-      // });
+      setState(() {
+        houseList = [];
+      });
       getHouseList();
     });
   }
@@ -31,9 +31,7 @@ class _HouseListState extends State<HouseList> {
   /// 获取房屋列表
   void getHouseList() async {
     try {
-      setState(() {
-        isLoadData = true;
-      });
+      isLoadData = true;
       var res = await http.get('/room');
       if (res['code'] != 10000) return ToastUtil.showError('获取房屋列表失败');
       ToastUtil.showSuccess('获取房屋列表成功!');
@@ -42,7 +40,8 @@ class _HouseListState extends State<HouseList> {
         isLoadData = false;
       });
     } catch (e) {
-      ToastUtil.showError('网络请求出现问题');
+      print(e);
+      // ToastUtil.showError('网络请求出现问题1111');
     }
   }
 

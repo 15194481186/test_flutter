@@ -29,7 +29,7 @@ class _HouseDetailState extends State<HouseDetail> {
         houseDetail = res['data'];
       });
     } catch (e) {
-      ToastUtil.showError('网络请求出现问题');
+      ToastUtil.showError('网络请求出现问题2222');
     }
   }
 
@@ -69,7 +69,7 @@ class _HouseDetailState extends State<HouseDetail> {
       ToastUtil.showSuccess('删除房屋成功');
       Navigator.pop(context);
     } catch (e) {
-      ToastUtil.showError('网络请求出现问题');
+      ToastUtil.showError('网络请求出现问题33333');
     }
   }
 
@@ -228,7 +228,10 @@ class _HouseDetailState extends State<HouseDetail> {
                                   ],
                                 )),
                             ElevatedButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.pushNamed(context, '/house_form',
+                                      arguments: houseDetail);
+                                },
                                 child: const Column(
                                   children: [
                                     SizedBox(

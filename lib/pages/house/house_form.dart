@@ -34,6 +34,9 @@ class _HouseFormState extends State<HouseForm> {
     super.initState();
     setState(() {
       _formData.addAll(widget.houseInfo);
+      _nameController.text = _formData['name'];
+      _mobileController.text = _formData['mobile'];
+      print(_formData);
     });
   }
 
@@ -50,6 +53,10 @@ class _HouseFormState extends State<HouseForm> {
         _formData['idcardFrontUrl'], _formData['idcardBackUrl'])) return;
     _formData['name'] = name;
     _formData['mobile'] = mobile;
+
+    if (_formData.containsKey('id')) {
+      _formData.remove('status');
+    }
 
     // 2. 发送请求
     try {
@@ -171,7 +178,7 @@ class _HouseFormState extends State<HouseForm> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('添加房屋信息'),
+          title: Text('${_formData.containsKey('id') ? '编辑' : '添加'}房屋信息'),
           centerTitle: true,
         ),
         body: Stack(
