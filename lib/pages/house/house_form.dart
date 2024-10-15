@@ -1,5 +1,7 @@
+import 'package:enjoy_plus_hm/utils/toast.dart';
 import 'package:enjoy_plus_hm/utils/validate.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class HouseForm extends StatefulWidget {
   HouseForm({super.key, required this.houseInfo});
@@ -41,20 +43,70 @@ class _HouseFormState extends State<HouseForm> {
     // 1. 校验表单的内容
     if (!Validate.validateName(name)) return;
     if (!Validate.validatePhone(mobile)) return;
-    if (!Validate.validateIdcardImg(_formData['idcardFrontUrl'], _formData['idcardBackUrl'])) return;
+    if (!Validate.validateIdcardImg(
+        _formData['idcardFrontUrl'], _formData['idcardBackUrl'])) return;
+  }
+
+  // 底部弹出弹窗
+  void showBottomSheet(String tag) {
+    showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return Container(
+              padding: const EdgeInsets.all(10),
+              height: 180,
+              child: Column(
+                children: [
+                  ListTile(
+                      leading: const Icon(Icons.camera_alt),
+                      title: const Text('拍照'),
+                      trailing: const Icon(Icons.arrow_forward_ios_rounded),
+                      onTap: () async {
+                        // 调用相机
+                        ImagePicker picker = ImagePicker();
+                        final XFile? photo =
+                            await picker.pickImage(source: ImageSource.camera);
+                        Navigator.pop(context);
+                        if (photo != null) {
+                          // uploadAvatar(photo.path);
+                        }
+                      }),
+                  ListTile(
+                      leading: const Icon(Icons.image),
+                      title: const Text('相册'),
+                      trailing: const Icon(Icons.arrow_forward_ios_rounded),
+                      onTap: () async {
+                        // 调用相册
+                        ImagePicker picker = ImagePicker();
+                        final XFile? image =
+                            await picker.pickImage(source: ImageSource.gallery);
+                        Navigator.pop(context);
+                        if (image != null) {
+                          // uploadAvatar(image.path);
+                        }
+                      })
+                ],
+              ));
+        });
   }
 
   Widget _buildAddIdcardPhoto(String tag, String info) {
-    return const Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Icon(Icons.add, size: 30, color: Color.fromARGB(255, 85, 145, 175)),
-          Text(
-            '上传人像面照片',
-            style: TextStyle(color: Color.fromARGB(255, 85, 145, 175)),
-          ),
-        ]);
+    return GestureDetector(
+        onTap: () {
+          showBottomSheet(tag);
+        },
+        child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const Icon(Icons.add,
+                  size: 30, color: Color.fromARGB(255, 85, 145, 175)),
+              Text(
+                info,
+                style:
+                    const TextStyle(color: Color.fromARGB(255, 85, 145, 175)),
+              ),
+            ]));
   }
 
   Widget _buildIdcardPhoto(String tag, String photoUrl) {
