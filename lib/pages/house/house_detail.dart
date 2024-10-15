@@ -32,6 +32,29 @@ class _HouseDetailState extends State<HouseDetail> {
     }
   }
 
+  /// 点击删除按钮
+  tapDeleteBtn() {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text('温馨提示'),
+            content: const Text('确定要删除该房屋吗？'),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text(
+                    '取消',
+                    style: TextStyle(color: Colors.grey),
+                  )),
+              TextButton(onPressed: () {}, child: const Text('确定'))
+            ],
+          );
+        });
+  }
+
   Widget tagBuilder(int status) {
     List tagList = [
       {},
@@ -172,7 +195,9 @@ class _HouseDetailState extends State<HouseDetail> {
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             ElevatedButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  tapDeleteBtn();
+                                },
                                 child: const Column(
                                   children: [
                                     SizedBox(
