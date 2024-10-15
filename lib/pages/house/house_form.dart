@@ -1,3 +1,5 @@
+import 'package:dio/dio.dart';
+import 'package:enjoy_plus_hm/utils/http.dart';
 import 'package:enjoy_plus_hm/utils/toast.dart';
 import 'package:enjoy_plus_hm/utils/validate.dart';
 import 'package:flutter/material.dart';
@@ -20,8 +22,8 @@ class _HouseFormState extends State<HouseForm> {
     'name': '', // 业主姓名
     'gender': 1, // 业主性别0女1男
     'mobile': '', // 业主电话
-    'idcardFrontUrl': 'assets/images/idcard1.png', // 身份证正面
-    'idcardBackUrl': 'assets/images/idcard2.png', // 身份证背面
+    'idcardFrontUrl': '', // 身份证正面
+    'idcardBackUrl': '', // 身份证背面
   };
 
   final TextEditingController _nameController = TextEditingController();
@@ -68,7 +70,7 @@ class _HouseFormState extends State<HouseForm> {
                             await picker.pickImage(source: ImageSource.camera);
                         Navigator.pop(context);
                         if (photo != null) {
-                          // uploadAvatar(photo.path);
+                          uploadAvatar(tag, photo.path);
                         }
                       }),
                   ListTile(
@@ -82,12 +84,31 @@ class _HouseFormState extends State<HouseForm> {
                             await picker.pickImage(source: ImageSource.gallery);
                         Navigator.pop(context);
                         if (image != null) {
-                          // uploadAvatar(image.path);
+                          uploadAvatar(tag, image.path);
                         }
                       })
                 ],
               ));
         });
+  }
+
+  /// 上传图片
+  uploadAvatar(String tag, String imagePath) async {
+    try {
+      // 1. 包装一个FormData对象
+      FormData fd = FormData.fromMap(
+          {"file": await MultipartFile.fromFile(imagePath)});
+      // 2. 调用上传接口
+      var res = await http.post('/upload', data: fd);
+      if (res['code'] != 10000) return ToastUtil.showError('上传图片失败');
+      // print(res);
+      setState(() {
+        _formData[tag] = res['data']['url'];
+        ToastUtil.showSuccess('上传图片成功');
+      });
+    } catch (e) {
+      ToastUtil.showError('上传图片失败');
+    } 
   }
 
   Widget _buildAddIdcardPhoto(String tag, String info) {
@@ -114,7 +135,7 @@ class _HouseFormState extends State<HouseForm> {
       SizedBox(
           width: MediaQuery.of(context).size.width - 20,
           height: 300,
-          child: Image.asset(photoUrl, fit: BoxFit.contain)),
+          child: Image.network(photoUrl, fit: BoxFit.contain)),
       Positioned(
           right: 0,
           top: 0,
