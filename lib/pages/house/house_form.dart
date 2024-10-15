@@ -1,3 +1,4 @@
+import 'package:enjoy_plus_hm/utils/validate.dart';
 import 'package:flutter/material.dart';
 
 class HouseForm extends StatefulWidget {
@@ -21,12 +22,26 @@ class _HouseFormState extends State<HouseForm> {
     'idcardBackUrl': 'assets/images/idcard2.png', // 身份证背面
   };
 
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _mobileController = TextEditingController();
+
   @override
   initState() {
     super.initState();
     setState(() {
       _formData.addAll(widget.houseInfo);
     });
+  }
+
+  /// 提交表单
+  submitForm() {
+    // 0. 获取表单元素中的数据
+    String name = _nameController.text;
+    String mobile = _mobileController.text;
+    // 1. 校验表单的内容
+    if (!Validate.validateName(name)) return;
+    if (!Validate.validatePhone(mobile)) return;
+    if (!Validate.validateIdcardImg(_formData['idcardFrontUrl'], _formData['idcardBackUrl'])) return;
   }
 
   Widget _buildAddIdcardPhoto(String tag, String info) {
@@ -87,7 +102,8 @@ class _HouseFormState extends State<HouseForm> {
                   color: Colors.white,
                   padding: const EdgeInsets.only(
                       left: 10, right: 10, top: 15, bottom: 15),
-                  child: Text('${_formData['point']}${_formData['building']}${_formData['room']}室'),
+                  child: Text(
+                      '${_formData['point']}${_formData['building']}${_formData['room']}室'),
                 ),
                 // 业主信息
                 Container(
@@ -101,9 +117,10 @@ class _HouseFormState extends State<HouseForm> {
                 Container(
                   color: Colors.white,
                   padding: const EdgeInsets.only(left: 10, right: 10),
-                  child: const TextField(
+                  child: TextField(
+                      controller: _nameController,
                       maxLength: 15,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         labelText: '姓名',
                         hintText: '请输入业主姓名',
                         hintStyle: TextStyle(color: Colors.grey),
@@ -146,10 +163,11 @@ class _HouseFormState extends State<HouseForm> {
                 Container(
                   color: Colors.white,
                   padding: const EdgeInsets.only(left: 10, right: 10),
-                  child: const TextField(
+                  child: TextField(
+                      controller: _mobileController,
                       keyboardType: TextInputType.phone,
                       maxLength: 11,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         labelText: '手机号',
                         hintText: '请输入您的手机号',
                         hintStyle: TextStyle(color: Colors.grey),
@@ -201,7 +219,7 @@ class _HouseFormState extends State<HouseForm> {
                 width: MediaQuery.of(context).size.width,
                 child: ElevatedButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, '/location_list');
+                      submitForm();
                     },
                     child: const Column(
                       mainAxisAlignment: MainAxisAlignment.center,
