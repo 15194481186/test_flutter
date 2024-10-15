@@ -1,4 +1,5 @@
 import 'package:enjoy_plus_hm/pages/house/components/house_item.dart';
+import 'package:enjoy_plus_hm/utils/evntbus.dart';
 import 'package:enjoy_plus_hm/utils/http.dart';
 import 'package:enjoy_plus_hm/utils/toast.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +19,13 @@ class _HouseListState extends State<HouseList> {
   void initState() {
     super.initState();
     getHouseList();
+
+    eventBus.on<RereshHouseList>().listen((event) {
+      // setState(() {
+      //   houseList = [];
+      // });
+      getHouseList();
+    });
   }
 
   /// 获取房屋列表

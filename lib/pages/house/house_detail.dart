@@ -1,3 +1,4 @@
+import 'package:enjoy_plus_hm/utils/evntbus.dart';
 import 'package:enjoy_plus_hm/utils/http.dart';
 import 'package:enjoy_plus_hm/utils/toast.dart';
 import 'package:flutter/material.dart';
@@ -33,7 +34,7 @@ class _HouseDetailState extends State<HouseDetail> {
   }
 
   /// 点击删除按钮
-  tapDeleteBtn() {
+  tapDeleteBtn(String id) {
     return showDialog(
         context: context,
         builder: (context) {
@@ -49,10 +50,27 @@ class _HouseDetailState extends State<HouseDetail> {
                     '取消',
                     style: TextStyle(color: Colors.grey),
                   )),
-              TextButton(onPressed: () {}, child: const Text('确定'))
+              TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    deleteHouse(id);
+                  },
+                  child: const Text('确定'))
             ],
           );
         });
+  }
+
+  void deleteHouse(String id) async {
+    try {
+      var res = await http.delete('/room/$id');
+      if (res['code'] != 10000) return ToastUtil.showError(res['message']);
+      eventBus.fire(RereshHouseList());
+      ToastUtil.showSuccess('删除房屋成功');
+      Navigator.pop(context);
+    } catch (e) {
+      ToastUtil.showError('网络请求出现问题');
+    }
   }
 
   Widget tagBuilder(int status) {
@@ -196,7 +214,7 @@ class _HouseDetailState extends State<HouseDetail> {
                           children: [
                             ElevatedButton(
                                 onPressed: () {
-                                  tapDeleteBtn();
+                                  tapDeleteBtn(houseDetail['id']);
                                 },
                                 child: const Column(
                                   children: [

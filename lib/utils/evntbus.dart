@@ -17,3 +17,8 @@ class RefreshMineEvent {
 class BackMineEvent {
   BackMineEvent();
 }
+
+// 5. 删除房屋刷新房屋列表
+class RereshHouseList {
+  RereshHouseList();
+}
