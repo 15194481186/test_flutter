@@ -1,5 +1,6 @@
 import 'package:enjoy_plus_hm/pages/home/detail.dart';
 import 'package:enjoy_plus_hm/pages/house/building_list.dart';
+import 'package:enjoy_plus_hm/pages/house/house_detail.dart';
 import 'package:enjoy_plus_hm/pages/house/house_form.dart';
 import 'package:enjoy_plus_hm/pages/house/house_list.dart';
 import 'package:enjoy_plus_hm/pages/house/location_list.dart';
@@ -69,6 +70,13 @@ void main() {
           return MaterialPageRoute(
               builder: (context) =>
                   HouseForm(houseInfo: settings.arguments as Map));
+        }
+
+        // 添加房屋
+        if (settings.name == '/house_detail') {
+          return MaterialPageRoute(
+              builder: (context) =>
+                  HouseDetail(houseInfo: settings.arguments as Map));
         }
 
         // 没有匹配到 ---> 主页面

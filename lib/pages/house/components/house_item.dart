@@ -49,51 +49,56 @@ class _HouseItemState extends State<HouseItem> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        padding: const EdgeInsets.all(10),
-        decoration: const BoxDecoration(
-          color: Colors.white,
-        ),
-        child: Column(
-          children: [
-            Row(
-              children: [
-                Expanded(child: Text('${houseInfo['point']}')),
-                const Spacer(),
-                tagBuilder(houseInfo['status'])
-              ],
+    return GestureDetector(
+      onTap: () {
+        Navigator.pushNamed(context, '/house_detail', arguments: houseInfo);
+      },
+      child: Container(
+            padding: const EdgeInsets.all(10),
+            decoration: const BoxDecoration(
+              color: Colors.white,
             ),
-            const SizedBox(height: 15),
-            Row(
+            child: Column(
               children: [
-                const Text(
-                  '房间号',
-                  style: TextStyle(color: Colors.grey),
+                Row(
+                  children: [
+                    Expanded(child: Text('${houseInfo['point']}')),
+                    const Spacer(),
+                    tagBuilder(houseInfo['status'])
+                  ],
                 ),
-                const Spacer(),
-                Expanded(
-                    child: Text(
-                  '${houseInfo['building']}${houseInfo['room']}室',
-                  textAlign: TextAlign.right,
-                )),
-              ],
-            ),
-            const SizedBox(height: 15),
-            Row(
-              children: [
-                const Text(
-                  '业主',
-                  style: TextStyle(color: Colors.grey),
+                const SizedBox(height: 15),
+                Row(
+                  children: [
+                    const Text(
+                      '房间号',
+                      style: TextStyle(color: Colors.grey),
+                    ),
+                    const Spacer(),
+                    Expanded(
+                        child: Text(
+                      '${houseInfo['building']}${houseInfo['room']}室',
+                      textAlign: TextAlign.right,
+                    )),
+                  ],
                 ),
-                const Spacer(),
-                Expanded(
-                    child: Text(
-                  '${houseInfo['name']}',
-                  textAlign: TextAlign.right,
-                )),
+                const SizedBox(height: 15),
+                Row(
+                  children: [
+                    const Text(
+                      '业主',
+                      style: TextStyle(color: Colors.grey),
+                    ),
+                    const Spacer(),
+                    Expanded(
+                        child: Text(
+                      '${houseInfo['name']}',
+                      textAlign: TextAlign.right,
+                    )),
+                  ],
+                ),
               ],
-            ),
-          ],
-        ));
+            ))
+    );
   }
 }
