@@ -1,7 +1,9 @@
+import 'package:enjoy_plus_hm/stores/counter.dart';
 import 'package:enjoy_plus_hm/utils/evntbus.dart';
 import 'package:enjoy_plus_hm/utils/http.dart';
 import 'package:enjoy_plus_hm/utils/toast.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class MinePage extends StatefulWidget {
   MinePage({super.key, required this.currentIndex});
@@ -71,10 +73,14 @@ class _MinePageState extends State<MinePage> {
 
   @override
   Widget build(BuildContext context) {
+    // 使用TokenModel
+    final counterModel = Provider.of<CounterModel>(context);
+
     return Scaffold(
       backgroundColor: const Color.fromARGB(200, 85, 145, 175),
       appBar: AppBar(
-        title: const Text('我的', style: TextStyle(color: Colors.white)),
+        title: Text('我的${counterModel.counter}',
+            style: const TextStyle(color: Colors.white)),
         backgroundColor: Colors.transparent,
         centerTitle: true,
       ),
@@ -132,12 +138,12 @@ class _MinePageState extends State<MinePage> {
               return SizedBox(
                   height: 50,
                   child: GestureDetector(
-                    onTap: () {
-                       if(item['title'] == '我的房屋'){
+                      onTap: () {
+                        if (item['title'] == '我的房屋') {
                           Navigator.pushNamed(context, '/house_list');
-                       }
-                    },
-                    child: Row(children: [
+                        }
+                      },
+                      child: Row(children: [
                         Row(
                           children: [
                             Image.asset(
@@ -160,10 +166,15 @@ class _MinePageState extends State<MinePage> {
                           size: 12,
                           color: Colors.grey,
                         )
-                      ])
-                  ));
+                      ])));
             }).toList()),
           ),
+
+          ElevatedButton(
+              onPressed: () {
+                counterModel.increment();
+              },
+              child: const Text('修改counter'))
         ],
       ),
     );

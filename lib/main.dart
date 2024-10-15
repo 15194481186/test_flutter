@@ -8,12 +8,18 @@ import 'package:enjoy_plus_hm/pages/house/room_list.dart';
 import 'package:enjoy_plus_hm/pages/login/index.dart';
 import 'package:enjoy_plus_hm/pages/profile/index.dart';
 import 'package:enjoy_plus_hm/pages/tab_bar/index.dart';
+import 'package:enjoy_plus_hm/stores/counter.dart';
 import 'package:enjoy_plus_hm/utils/token.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(
-    MaterialApp(
+    MultiProvider(
+      providers: [
+         ChangeNotifierProvider(create: (_) => CounterModel()),
+      ],
+      child: MaterialApp(
       routes: {
         '/': (context) => const TabBarPage(),
         '/detail': (context) => const NoticeDetail(),
@@ -59,10 +65,9 @@ void main() {
         // 房间列表
         if (settings.name == '/room_list') {
           Map temp = settings.arguments as Map;
-          return MaterialPageRoute(builder: (context) => RoomList(
-            point: temp['point'],
-            building: temp['building']
-          ));
+          return MaterialPageRoute(
+              builder: (context) =>
+                  RoomList(point: temp['point'], building: temp['building']));
         }
 
         // 添加房屋
@@ -84,5 +89,6 @@ void main() {
       },
       initialRoute: '/',
     ),
+    )
   );
 }

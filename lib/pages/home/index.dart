@@ -1,8 +1,10 @@
 import 'package:enjoy_plus_hm/pages/home/components/home_list.dart';
 import 'package:enjoy_plus_hm/pages/home/components/home_nav.dart';
+import 'package:enjoy_plus_hm/stores/counter.dart';
 import 'package:enjoy_plus_hm/utils/http.dart';
 import 'package:enjoy_plus_hm/utils/toast.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -37,10 +39,14 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    
+    // 使用TokenModel
+    final counterModel = Provider.of<CounterModel>(context);
+    
     return Scaffold(
         backgroundColor: const Color.fromARGB(40, 85, 145, 175),
         appBar: AppBar(
-          title: const Text('享+社区'),
+          title: Text('享+社区${counterModel.counter}'),
           backgroundColor: Colors.transparent,
           centerTitle: true,
         ),
