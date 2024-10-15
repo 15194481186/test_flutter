@@ -38,15 +38,32 @@ class _HouseFormState extends State<HouseForm> {
   }
 
   /// 提交表单
-  submitForm() {
+  submitForm() async {
     // 0. 获取表单元素中的数据
     String name = _nameController.text;
     String mobile = _mobileController.text;
+
     // 1. 校验表单的内容
     if (!Validate.validateName(name)) return;
     if (!Validate.validatePhone(mobile)) return;
     if (!Validate.validateIdcardImg(
         _formData['idcardFrontUrl'], _formData['idcardBackUrl'])) return;
+    _formData['name'] = name;
+    _formData['mobile'] = mobile;
+
+    // 2. 发送请求
+    try {
+      var res = await http.post('/room', data: _formData);
+      print(res);
+      if (res['code'] != 10000) return ToastUtil.showError(res['message']);
+      ToastUtil.showSuccess('提交成功');
+      Navigator.popUntil(context, (route) {
+        return route.settings.name == '/';
+      });
+    } catch (e) {
+      print(e);
+      ToastUtil.showError('网络出现问题');
+    }
   }
 
   // 底部弹出弹窗
@@ -96,8 +113,8 @@ class _HouseFormState extends State<HouseForm> {
   uploadAvatar(String tag, String imagePath) async {
     try {
       // 1. 包装一个FormData对象
-      FormData fd = FormData.fromMap(
-          {"file": await MultipartFile.fromFile(imagePath)});
+      FormData fd =
+          FormData.fromMap({"file": await MultipartFile.fromFile(imagePath)});
       // 2. 调用上传接口
       var res = await http.post('/upload', data: fd);
       if (res['code'] != 10000) return ToastUtil.showError('上传图片失败');
@@ -108,7 +125,7 @@ class _HouseFormState extends State<HouseForm> {
       });
     } catch (e) {
       ToastUtil.showError('上传图片失败');
-    } 
+    }
   }
 
   Widget _buildAddIdcardPhoto(String tag, String info) {
